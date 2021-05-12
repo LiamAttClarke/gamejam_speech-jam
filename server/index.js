@@ -2,8 +2,10 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const SocketIO = require('socket.io');
+const open = require('open');
 
 const PORT = process.env.PORT || 3000;
+const CLIENT_ADDRESS = `http://localhost:${PORT}`;
 
 const CLIENT_DIST = path.join(__dirname, '../client/dist');
 
@@ -22,5 +24,12 @@ io.on('connection', (socket) => {
 });
 
 httpServer.listen(PORT, () => {
-    console.log(`Serving on port ${PORT}.`);
+    console.info(`
+    SpeechJam
+
+    Compete with friends to blend in with the AI in a chatroom. Vote on the imposter, get points each round for guessing correctly and for tricking your opponents.
+
+    Visit ${CLIENT_ADDRESS} to get started.
+    `)
+    open(CLIENT_ADDRESS);
 });

@@ -4,7 +4,7 @@ Compete with friends to blend in with the AI in a chatroom. Vote on the imposter
 ## Usage
 1. Download appropriate executable from the [bin/](./bin) directory.
 1. Run executable.
-1. Read instructions printed in the terminal window that opens.
+1. Follow instructions in webpage that opens.
 
 ## Development Setup
 
@@ -15,14 +15,18 @@ Compete with friends to blend in with the AI in a chatroom. Vote on the imposter
     ```
     yarn setup
     ```
-1. Start development server
-    ```
-    yarn server dev
-    ```
 1. Build and watch for client changes
     In a separate terminal run:
     ```
     yarn client dev
     ```
-1. Visit URL printed in dev server terminal.
+1. Start development server
+    ```
+    yarn server dev
+    ```
+1. Website should automatically be opened, if not, visit URL printed in dev server terminal.
+
+## Dev Notes
+
+- `open` module has been fixed at version 8.0.2 because of this issue: https://github.com/sindresorhus/open/issues/236
 

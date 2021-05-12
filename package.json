@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "bin": "server/index.js",
   "scripts": {
+    "setup": "yarn install && yarn server install && yarn client install",
     "server": "yarn --cwd ./server",
-    "client": "yarn --cwd ./client",
+    "client": "yarn --cwd ./client",    
     "pkg": "pkg ."
   },
   "pkg": {    

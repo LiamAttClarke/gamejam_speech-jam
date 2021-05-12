@@ -1,0 +1,12 @@
+{
+  "name": "speechjam",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "server": "yarn --cwd ./server",
+    "client": "yarn --cwd ./client"
+  },
+  "repository": "git@github.com:LiamAttClarke/SpeechJam.git",
+  "author": "LiamAttClarke <liam.att.clarke@gmail.com>",
+  "license": "MIT"
+}

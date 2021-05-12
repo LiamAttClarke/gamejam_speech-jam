@@ -1,11 +1,9 @@
-import path from 'path';
-import http from 'http';
-import express from 'express';
-import SocketIO from 'socket.io';
+const path = require('path');
+const http = require('http');
+const express = require('express');
+const SocketIO = require('socket.io');
 
-const {
-    PORT
-} = process.env;
+const PORT = process.env.PORT || 3000;
 
 const CLIENT_DIST = path.join(__dirname, '../client/dist');
 

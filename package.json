@@ -6,7 +6,7 @@
     "setup": "yarn install && yarn server install && yarn client install",
     "server": "yarn --cwd ./server",
     "client": "yarn --cwd ./client",    
-    "pkg": "pkg ."
+    "pkg": "NODE_ENV=production pkg ."
   },
   "pkg": {    
     "assets": "client/dist/**/*",

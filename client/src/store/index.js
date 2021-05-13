@@ -1,10 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { io } from 'socket.io-client';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
+
+const socket = io();
 
 export default new Vuex.Store({
   state: {
+
   },
   mutations: {
   },
@@ -12,4 +16,4 @@ export default new Vuex.Store({
   },
   modules: {
   }
-})
+});

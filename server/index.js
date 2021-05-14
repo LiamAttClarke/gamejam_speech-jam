@@ -3,7 +3,7 @@ const http = require('http');
 const express = require('express');
 const SocketIO = require('socket.io');
 const open = require('open');
-const { onConnect } = require('./api')
+const { initSockets } = require('./api')
 
 const PORT = process.env.PORT || 3000;
 const CLIENT_ADDRESS = `http://localhost:${PORT}`;
@@ -20,7 +20,7 @@ app.get('*', (request, response) => {
   response.sendFile(path.join(CLIENT_DIST, 'index.html'));
 });
 
-io.on('connection', onConnect);
+initSockets(io);
 
 httpServer.listen(PORT, () => {
   console.info(`

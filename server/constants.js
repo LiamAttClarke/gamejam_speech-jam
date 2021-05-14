@@ -1,1 +1,1 @@
-exports.DEFAULT_PLAYER_NAME = 'unassigned';
+exports.DEFAULT_PLAYER_NAME = 'Annonymous';

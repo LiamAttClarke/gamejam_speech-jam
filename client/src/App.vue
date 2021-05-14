@@ -1,32 +1,51 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <h1>Room:</h1>
+    <ul>
+      <li><b>Id: </b><span>{{ room.id }}</span></li>
+      <li><b>State: </b><span>{{ room.state }}</span></li>
+      <li><b>Round: </b><span>{{ room.round }}</span></li>
+      <li><b>Host Id: </b><span>{{ room.host }}</span></li>
+      <li>
+        <b>Players: </b>
+        <ul>
+          <li v-for="p in room.players" :key="p.id">
+            <div><b>id:</b> {{ p.id }}</div>
+            <div><b>name:</b> {{ p.name }}</div>
+            <div><b>isSpectator:</b> {{ p.isSpectator }}</div>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <b>Scores: </b>
+        <ul>
+          <li v-for="(score, pid) in room.scores" :key="pid">
+            <div><b>id:</b> {{ pid }}</div>
+            <div><b>score:</b> {{ score }}</div>            
+          </li>
+        </ul>
+      </li>
+    </ul>
     <router-view/>
   </div>
 </template>
 
+<script>
+import { mapGetters } from 'vuex'
+
+export default {
+  computed: {
+    ...mapGetters([
+      'room'
+    ]),
+  }
+}
+</script>
+
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
 }
 </style>

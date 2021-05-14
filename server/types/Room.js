@@ -5,7 +5,9 @@ module.exports = class Room {
         this.id = uuid();
         this.round = 0;
         this.host = null;
+        // Player.id -> Player
         this._players = new Map();        
+        // Player.id -> Score
         this._scores = new Map();
     }
 

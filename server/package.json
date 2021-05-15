@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/LiamAttClarke/SpeechJam#readme",
   "dependencies": {
+    "@tensorflow/tfjs": "^3.6.0",
+    "@tensorflow/tfjs-node": "^3.6.1",
     "express": "^4.17.1",
     "open": "8.0.2",
     "socket.io": "^4.1.1",

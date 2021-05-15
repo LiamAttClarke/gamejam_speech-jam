@@ -3,21 +3,16 @@ import VueRouter from 'vue-router';
 
 import Debug from '../views/Debug.vue';
 
-import Menu from '../views/Menu.vue';
 import Lobby from '../views/Lobby.vue';
 import Chatroom from '../views/Chatroom.vue';
 import Score from '../views/Score.vue';
+import About from '../views/About.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
-    name: 'Menu',
-    component: Menu
-  },
-  {
-    path: '/lobby',
     name: 'Lobby',
     component: Lobby
   },
@@ -30,6 +25,11 @@ const routes = [
     path: '/scores',
     name: 'Score',
     component: Score
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: About
   },
   {
     path: '/debug',

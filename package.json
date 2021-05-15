@@ -1,21 +1,22 @@
 {
   "name": "speechjam",
   "version": "1.0.0",
-  "bin": "server/index.js",
+  "author": "LiamAttClarke <liam.att.clarke@gmail.com>",
   "scripts": {
-    "setup": "yarn install && yarn server install && yarn client install",
-    "server": "yarn --cwd ./server",
     "client": "yarn --cwd ./client",
-    "pkg": "NODE_ENV=production pkg ."
+    "pkg": "NODE_ENV=production pkg .",
+    "server": "yarn --cwd ./server",
+    "setup": "yarn install && yarn server install && yarn client install"
   },
+  "dependencies": {},
+  "devDependencies": {
+    "pkg": "^5.1.0"
+  },
+  "bin": "server/index.js",
+  "license": "MIT",
   "pkg": {
     "assets": "client/dist/**/*",
     "outputPath": "bin"
   },
-  "repository": "git@github.com:LiamAttClarke/SpeechJam.git",
-  "author": "LiamAttClarke <liam.att.clarke@gmail.com>",
-  "license": "MIT",
-  "devDependencies": {
-    "pkg": "^5.1.0"
-  }
+  "repository": "git@github.com:LiamAttClarke/SpeechJam.git"
 }

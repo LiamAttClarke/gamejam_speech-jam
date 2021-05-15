@@ -8,20 +8,23 @@ const socket = io();
 const store = new Vuex.Store({
   state: {
     room: {
-      id: null, 
+      id: null,
       state: 'lobby',
       round: 0,
       host: null,
       players: [],
       scores: {},
-      messages: [],  
+      messages: [],
     }
   },
   getters: {
-    room: (state) => state.room,      
+    room: (state) => state.room,
   },
   mutations: {
-    setRoom(state, room) { state.room = room; }
+    setRoom(state, room) {
+      console.log('update:state', state.room, room);
+      state.room = room;
+    }
   },
   actions: {
     setName(context, name) {
@@ -43,6 +46,6 @@ socket.on('disconnect', (reason) => {
 
 socket.on('error', (error) => alert(error));
 
-socket.on('joined:room', (room) => store.commit('setRoom', room));
+socket.on('update:state', (room) => store.commit('setRoom', room));
 
 export default store;

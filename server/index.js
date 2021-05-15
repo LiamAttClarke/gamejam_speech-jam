@@ -32,5 +32,5 @@ httpServer.listen(PORT, () => {
   `);
   if (process.env.NODE_ENV === 'production') {
     open(CLIENT_ADDRESS);
-  }  
+  }
 });

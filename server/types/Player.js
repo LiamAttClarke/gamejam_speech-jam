@@ -1,4 +1,4 @@
-const { DEFAULT_PLAYER_NAME } = require("../constants");
+const { DEFAULT_PLAYER_NAME } = require('../constants');
 
 module.exports = class Player {
   constructor(id, options = {}) {
@@ -12,5 +12,6 @@ module.exports = class Player {
   reset() {
     this.score = 0;
     this.isReady = false;
+    this.isSpectator = false;
   }
 }

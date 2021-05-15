@@ -4,8 +4,8 @@
   "description": "",
   "main": "./index.js",
   "scripts": {
-    "dev": "PORT=3000 nodemon ./index.js",
-    "start": "PORT=3000 node ./index.js"
+    "dev": "PORT=3001 nodemon ./index.js",
+    "start": "PORT=3001 node ./index.js"
   },
   "repository": {
     "type": "git",

@@ -1,25 +1,30 @@
 <template>
   <div id="app">
-    <h1>Room:</h1>
-    <ul>
-      <li><b>Id: </b><span>{{ room.id }}</span></li>
-      <li><b>State: </b><span>{{ room.state }}</span></li>
-      <li><b>Round: </b><span>{{ room.round }}</span></li>
-      <li><b>Host Id: </b><span>{{ room.host }}</span></li>
-      <li>
-        <b>Players: </b>
-        <ul>
-          <li v-for="p in room.players" :key="p.id">
-            <div><b>id:</b> {{ p.id }}</div>
-            <div><b>name:</b> {{ p.name }}</div>
-            <div><b>isSpectator:</b> {{ p.isSpectator }}</div>
-            <div><b>isReady:</b> {{ p.isReady }}</div>
-            <div><b>score:</b> {{ p.score }}</div>
-          </li>
-        </ul>
-      </li>
-    </ul>
-    <router-view/>
+    <h1>Room State:</h1>
+    <pre>{{ roomDebug }}</pre>
+    <div v-if="room.state === 'lobby'">
+      <input type="text" v-model="name">
+      <button @click="() => $store.dispatch('setName', name)">Set Name</button>
+      <hr>
+    </div>
+    <div v-else-if="room.state === 'chat'">
+      <input type="text" v-model="message">
+      <button @click="() => $store.dispatch('addMessage', message)">Add Message</button>
+      <hr>
+    </div>
+    <div v-else-if="room.state === 'vote'">
+      <h3>Vote For The Imposter</h3>
+      <button
+        v-for="anonName in currentRound.playerNames"
+        :key="anonName"
+        @click="() => $store.dispatch('voteImposter', anonName)">{{ anonName }}</button>
+      <hr>
+    </div>
+    <div v-if="isHost">
+      <button @click="() => $store.dispatch('continue')">Continue</button>
+      <button @click="() => $store.dispatch('reset')">Reset</button>
+    </div>
+    <router-view />
   </div>
 </template>
 
@@ -29,9 +34,16 @@ import { mapGetters } from 'vuex'
 export default {
   computed: {
     ...mapGetters([
-      'room'
+      'roomDebug',
+      'room',
+      'isHost',
+      'currentRound'
     ]),
-  }
+  },
+  data: () => ({
+    name: '',
+    message: '',
+  }),
 }
 </script>
 

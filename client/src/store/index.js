@@ -22,6 +22,7 @@ const store = new Vuex.Store({
   },
   mutations: {
     setRoom(state, room) {
+      console.log('update:state', state.room, room);
       state.room = room;
     }
   },
@@ -45,6 +46,6 @@ socket.on('disconnect', reason => {
 
 socket.on('error', error => alert(error));
 
-socket.on('joined:room', room => store.commit('setRoom', room));
+socket.on('update:state', room => store.commit('setRoom', room));
 
 export default store;

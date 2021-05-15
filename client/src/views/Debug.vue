@@ -13,15 +13,8 @@
             <div><b>id:</b> {{ p.id }}</div>
             <div><b>name:</b> {{ p.name }}</div>
             <div><b>isSpectator:</b> {{ p.isSpectator }}</div>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <b>Scores: </b>
-        <ul>
-          <li v-for="(score, pid) in room.scores" :key="pid">
-            <div><b>id:</b> {{ pid }}</div>
-            <div><b>score:</b> {{ score }}</div>
+            <div><b>isReady:</b> {{ p.isReady }}</div>
+            <div><b>score:</b> {{ p.score }}</div>
           </li>
         </ul>
       </li>

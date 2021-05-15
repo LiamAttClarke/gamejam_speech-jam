@@ -1,10 +1,10 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
 import { io } from 'socket.io-client';
 
 Vue.use(Vuex);
 
-const socket = io();
+const socket = io('http://localhost:3000');
 const store = new Vuex.Store({
   state: {
     room: {
@@ -44,14 +44,14 @@ const store = new Vuex.Store({
     reset(context) {
       socket.emit('reset');
     }
-  },
-})
+  }
+});
 
 socket.on('connect', () => {
   console.log('Connected');
 });
 
-socket.on('disconnect', (reason) => {
+socket.on('disconnect', reason => {
   console.log(`Disconnected. Reason: ${reason}`);
 });
 
@@ -60,6 +60,6 @@ socket.on('error', (error) => {
   alert(error);
 });
 
-socket.on('update:state', (room) => store.commit('setRoom', room));
+socket.on('update:state', room => store.commit('setRoom', room));
 
 export default store;

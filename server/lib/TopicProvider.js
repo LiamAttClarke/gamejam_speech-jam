@@ -4,7 +4,7 @@ const gpt = require('./gpt');
 const topics = {
   SPEECHJAM : 'https://speechjam-gpt2-43ucqvtxja-nn.a.run.app',
   WIKI : 'https://en.wikipedia.org/api/rest_v1/page/random/summary'
-}
+};
 
 module.exports = class TopicProvider {
   //Generates a topic string

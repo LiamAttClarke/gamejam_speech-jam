@@ -1,34 +1,38 @@
 <template>
   <div>
-    <h1>Room State:</h1>
-    <pre>{{ roomDebug }}</pre>
-    <div v-if="room.state === 'lobby'">
-      <input type="text" v-model="name">
-      <button @click="() => $store.dispatch('setName', name)">Set Name</button>
+    <div v-if="room.state === 'lobby'" class="d-flex">
+      <v-text-field type="text" v-model="name" />
+      <v-btn @click="() => $store.dispatch('setName', name)">Set Name</v-btn>
       <hr>
     </div>
-    <div v-else-if="room.state === 'chat'">
-      <input type="text" v-model="message">
-      <button @click="() => $store.dispatch('addMessage', message)">Add Message</button>
+    <div v-else-if="room.state === 'chat'" class="d-flex">
+      <v-text-field type="text" v-model="message" />
+      <v-btn @click="() => $store.dispatch('addMessage', message)">Add Message</v-btn>
       <hr>
     </div>
     <div v-else-if="room.state === 'vote'">
       <h3>Vote For The Imposter</h3>
-      <button
-        v-for="anonName in currentRound.playerNames"
-        :key="anonName"
-        @click="() => $store.dispatch('voteImposter', anonName)">{{ anonName }}</button>
+      <div class="d-flex">
+        <v-btn
+          v-for="anonName in currentRound.playerNames"
+          :key="anonName"
+          @click="() => $store.dispatch('voteImposter', anonName)">{{ anonName }}</v-btn>
+      </div>
+
       <hr>
     </div>
     <div v-if="isHost">
-      <button @click="() => $store.dispatch('continue')">Continue</button>
-      <button @click="() => $store.dispatch('reset')">Reset</button>
+      <v-btn @click="() => $store.dispatch('continue')">Continue</v-btn>
+      <v-btn @click="() => $store.dispatch('reset')">Reset</v-btn>
     </div>
+    <hr>
+    <h1>Room State:</h1>
+    <pre>{{ roomDebug }}</pre>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'Debug',

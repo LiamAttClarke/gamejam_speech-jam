@@ -102,3 +102,7 @@ dist
 
 # TernJS port file
 .tern-port
+
+gpt-2/gpt-2
+gpt-2/test_gpt2
+model

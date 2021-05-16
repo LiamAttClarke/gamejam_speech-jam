@@ -23,10 +23,11 @@
         hide-details="true"
         :value="message"
         v-model="message"
-        append-outer-icon="mdi-send"
-        @keyup.enter="sendMessage"
-        @click:append-outer="sendMessage"
-      ></v-text-field>
+        @keyup.enter="room.state === 'chat' ? sendMessage : ''"
+      >
+        <!-- Slot template, append outer -->
+        <v-btn @click="sendMessage">Submit</v-btn>
+      </v-text-field>
       <VotingBar v-if="room.state === 'vote'"></VotingBar>
     </div>
   </div>

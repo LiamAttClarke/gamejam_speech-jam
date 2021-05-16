@@ -33,6 +33,24 @@ export default {
   data: () => ({
     //
   }),
+  watch: {
+    "$store.state.room": function (newRoom, oldRoom) {
+      console.log(newRoom, oldRoom);
+      if (newRoom.state !== oldRoom.state) {
+        switch (newRoom.state) {
+          case "lobby":
+            this.$router.push({ name: "Lobby" });
+            break;
+          case "prepare":
+          case "chat":
+          case "vote":
+          case "reveal":
+            this.$router.push({ name: "Chatroom" });
+            break;
+        }
+      }
+    },
+  },
 };
 </script>
 

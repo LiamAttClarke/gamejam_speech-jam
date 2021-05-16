@@ -66,6 +66,9 @@ socket.on('error', error => {
   alert(error);
 });
 
-socket.on('update:state', room => store.commit('setRoom', room));
+socket.on('update:state', room => {
+  console.log(room);
+  store.commit('setRoom', room);
+});
 
 export default store;

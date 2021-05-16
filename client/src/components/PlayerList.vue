@@ -20,8 +20,9 @@
         <v-btn
           color="accent"
           :disabled="room.players.length < 2"
+          v-if="room.state === 'lobby'"
           block
-          @onClick="$store.dispatch('continue')"
+          @click="() => $store.dispatch('continue')"
         >Force Start</v-btn>
       </div>
     </template>

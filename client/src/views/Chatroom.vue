@@ -13,9 +13,8 @@
       </ul>
     </div>
     <div class="chatbar">
-      <div class="chatbar__input">
+      <div class="chatbar__input" v-if="room.state === 'prepare' || room.state === 'chat'">
         <v-text-field
-          v-if="room.state === 'chat' || room.state === 'prepare'"
           :disabled="room.state === 'prepare'"
           outlined
           dense
@@ -28,7 +27,7 @@
         ></v-text-field>
         <v-btn color="primary" class="ml-1" :disabled="room.state !== 'chat' " @click="sendMessage">Send</v-btn>
       </div>
-      <VotingBar v-if="room.state === 'vote'"></VotingBar>
+      <VotingBar v-else></VotingBar>
     </div>
   </div>
 </template>

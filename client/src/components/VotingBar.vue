@@ -1,28 +1,26 @@
 <template>
   <div>
     <h2 class="mb-2">Time to Vote! Who is the real AI?</h2>
-    <div class="grid-container">
+
+    <v-btn-toggle v-model="selected" class="grid-container">
       <!-- Change Card Colour based on player -->
-      <v-card
-        class="pa-2"
-        v-for="player in activePlayers"
-        :key="player.id"
-      >
+      <v-card class="pa-2" v-for="player in activePlayers" :key="player.id">
         <div class="d-flex justify-space-between align-center">
           <!-- Put Avatars Here -->
           <v-avatar size="56">
-            <img
-              alt="Player Avatar"
-              src="https://cdn.pixabay.com/photo/2020/06/24/19/12/cabbage-5337431_1280.jpg"
-            />
+            <span class="text-h5">{{ player.avatar }}</span>
           </v-avatar>
           <span>{{ player.anonName }}</span>
-          <v-card-actions>
-            <v-btn color="success" @click="() => $store.dispatch('vote', player.id)">Vote</v-btn>
-          </v-card-actions>
+          <v-card-action>
+            <v-btn
+              v-if="selected !== player"
+              color="primary"
+              @click="() => $store.dispatch('vote', player.id)"
+            >Vote</v-btn>
+          </v-card-action>
         </div>
       </v-card>
-    </div>
+    </v-btn-toggle>
   </div>
 </template>
 
@@ -30,6 +28,11 @@
 import { mapGetters } from "vuex";
 export default {
   name: "VotingBar",
+  data: () => {
+    return {
+      selected: "",
+    };
+  },
   computed: {
     ...mapGetters(["room", 'activePlayers']),
   },

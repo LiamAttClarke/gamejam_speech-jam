@@ -38,29 +38,14 @@
           </v-row>
           <v-row>
             <v-col>
-              <v-slider
+              <v-select
+                outlined
+                dense
                 :value="room.options.rounds"
                 label="Number of Rounds"
-                thumb-label
-                style="width:50%"
-                max="50"
-                min="1"
+                :items="roundOptions"
                 @change="(v) => $store.dispatch('setOptions', { rounds: v })"
-              >
-                <template v-slot:append>
-                  <v-text-field
-                    v-model="room.options.rounds"
-                    class="mt-0 pt-0"
-                    hide-details
-                    outlined
-                    single-line
-                    dense
-                    readonly
-                    type="number"
-                    style="width: 60px"
-                  ></v-text-field>
-                </template>
-              </v-slider>
+              ></v-select>
             </v-col>
           </v-row>
         </v-form>
@@ -97,6 +82,13 @@ export default {
       { text: "3 minutes", value: 60 * 3 },
       { text: "4 minutes", value: 60 * 4 },
       { text: "5 minutes", value: 60 * 5 },
+    ],
+    roundOptions: [
+      { text: "1 round", value: 1 },
+      { text: "2 rounds", value: 2 },
+      { text: "3 rounds", value: 3 },
+      { text: "4 rounds", value: 4 },
+      { text: "5 rounds", value: 5 },
     ],
   }),
   methods: {},

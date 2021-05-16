@@ -23,10 +23,12 @@
         hide-details="true"
         :value="message"
         v-model="message"
-        append-outer-icon="mdi-send"
         @keyup.enter="sendMessage"
-        @click:append-outer="sendMessage"
-      ></v-text-field>
+      >
+        <template v-slot:append-outer>
+          <v-btn @click="sendMessage">Submit</v-btn>
+        </template>
+      </v-text-field>
       <VotingBar v-if="room.state === 'vote'"></VotingBar>
     </div>
   </div>
@@ -85,8 +87,10 @@ export default {
         container.scrollHeight + container.lastElementChild.offsetTop;
     },
     sendMessage() {
-      this.$store.dispatch("addMessage", this.message);
-      this.message = "";
+      if (room.state === "chat") {
+        this.$store.dispatch("addMessage", this.message);
+        this.message = "";
+      }
     },
   },
   watch: {

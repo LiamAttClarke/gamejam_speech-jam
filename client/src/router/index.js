@@ -1,8 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import Debug from '../views/Debug.vue';
-
 import Lobby from '../views/Lobby.vue';
 import Chatroom from '../views/Chatroom.vue';
 import store from '../store';
@@ -26,11 +24,6 @@ const routes = [
         next();
       }
     }
-  },
-  {
-    path: '/debug',
-    name: 'Debug',
-    component: Debug
   }
 ];
 

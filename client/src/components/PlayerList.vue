@@ -1,7 +1,8 @@
 <template>
   <v-navigation-drawer :mini-variant="room.state !== 'lobby'" permanent clipped app width="500">
     <v-list>
-      <v-list-item v-for="player in room.players" :key="player.id" class="player-info">
+      <v-list-item v-for="player in room.players" :key="player.id"
+        :class="'player-info' +' '+ { 'active-class' : self.id == player.id}">
         <v-list-item-icon>
           <!-- Emoji Picked by Player -->
           <v-icon>mdi-emoticon-happy-outline</v-icon>
@@ -34,11 +35,12 @@ import { mapGetters } from "vuex";
 export default {
   name: "PlayerList",
   computed: {
-    ...mapGetters(["room", "isHost"]),
+    ...mapGetters(["room", "isHost", "self"]),
   },
   methods: {
     onReady(isReady) {
       this.$store.dispatch("setReady", isReady);
+      console.log(self.id);
     },
   },
 };

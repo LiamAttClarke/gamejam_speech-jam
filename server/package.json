@@ -5,7 +5,9 @@
   "main": "./index.js",
   "scripts": {
     "dev": "PORT=3000 nodemon ./index.js",
-    "start": "PORT=3000 node ./index.js"
+    "start": "PORT=3000 node ./index.js",
+    "devwin": "set PORT=3000 && nodemon ./index.js",
+    "startwin": "set PORT=3000 && node ./index.js"
   },
   "repository": {
     "type": "git",

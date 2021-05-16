@@ -2,7 +2,7 @@ const Message = require('./Message');
 
 module.exports = class Round {
   constructor() {
-    this.seed = '';
+    this.topic = '';
     this._messages = [];
     // Player.id -> anonymous name
     this._anonPlayerNames = new Map();
@@ -45,7 +45,7 @@ module.exports = class Round {
 
   serializeForClient() {
     return {
-      seed: this.seed,
+      topic: this.topic,
       playerNames: this.playerNames,
       messages: this.messages,
       votes: this.votes

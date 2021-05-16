@@ -1,8 +1,14 @@
-const { v4: uuid } = require('uuid');
+const uuid = require('uuid');
 const EventEmitter = require('../lib/EventEmitter');
 const generateName = require('../lib/NameProvider');
+const GPT2Bot = require('../lib/bots/GPT2Bot');
 const Player = require('./Player');
 const Round = require('./Round');
+const { BotEvent } = require('../lib/bots/BaseBot');
+const WikipediaProvider = require('../lib/topic-providers/WikipediaProvider');
+const GPT2Provider = require('../lib/topic-providers/GPT2Provider');
+const { BOT_NAME } = require('../constants');
+const { PreconditionNotSatisfied } = require('../errors');
 
 const RoomState = {
   Lobby: 'lobby',
@@ -14,28 +20,37 @@ const RoomState = {
 
 const RoomEvent = {
   StateChange: 'state-change',
-}
+};
 
-const defaultOptions = {
-  rounds: 3,
-  prepareTime: 3,
-  chatTime: 10,
-  votingTime: 10,
+const DEFAULT_ROOM_OPTIONS = {
+  rounds: 1,
+  prepareTime: 10,
+  chatTime: 60 * 2,
+  votingTime: 60 * 2,
 };
 
 class Room extends EventEmitter {
   constructor() {
     super();
     this._emitterContext = this;
-    this.id = uuid();
+    this.id = uuid.v4();
     this.round = 0;
     this.host = null;
     this._state = RoomState.Lobby;
     // Player.id -> Player
     this._players = new Map();
     this._rounds = [];
-    this._options = { ...defaultOptions };
+    this._options = { ...DEFAULT_ROOM_OPTIONS };
     this._stateTimeout = null;
+    this._bot = new GPT2Bot();
+    this._botPlayer = new Player(uuid.v4(), BOT_NAME);
+    this._bot.on(BotEvent.Message, (message) => {
+      this.addMessage(this._botPlayer.id, message);
+      this.emit(RoomEvent.StateChange);
+    });
+    this._topicProviders = [
+      new WikipediaProvider,
+    ];
   }
 
   get state() {
@@ -72,32 +87,43 @@ class Room extends EventEmitter {
 
   setOptions(options) {
     if (this.state !== RoomState.Lobby) throw new Error('Room options can only be set while in the lobby.');
+    const optionKeys = Object.keys(DEFAULT_ROOM_OPTIONS);
+    Object.keys(options).forEach((k) => {
+      if (!optionKeys.includes(k)) {
+        throw new Error(`Invalid option: ${k}`);
+      }
+    });
+    // TODO: add validation
     this._options = {
       ...this._options,
       ...options,
     };
   }
 
-  nextState() {
+  async nextState() {
     if (this.state === RoomState.Lobby) {
-      if (this._players.size < 2) throw new Error('At least 2 players required.');
-      this._rounds.push(this.initNewRound());
+      if (this._players.size < 2) throw new PreconditionNotSatisfied('At least 2 players required.');
+      const round = await this.initNewRound();
+      this._rounds.push(round);
       this._state = RoomState.Prepare;
       this._stateTimeout = setTimeout(this.nextState.bind(this), this._options.prepareTime * 1000);
     } else if (this.state === RoomState.Prepare) {
       clearTimeout(this._stateTimeout);
       this._state = RoomState.Chat;
+      this._bot.start();
       this._stateTimeout = setTimeout(this.nextState.bind(this), this._options.chatTime * 1000);
     } else if (this.state === RoomState.Chat) {
       clearTimeout(this._stateTimeout);
       this._state = RoomState.Vote;
+      this._bot.stop();
       this._stateTimeout = setTimeout(this.nextState.bind(this), this._options.votingTime * 1000);
     } else if (this.state === RoomState.Vote) {
       clearTimeout(this._stateTimeout);
       this._state = RoomState.Reveal;
     } else if (this.state === RoomState.Reveal) {
       if (this.round < this._options.rounds - 1) {
-        this._rounds.push(this.initNewRound());
+        const round = await this.initNewRound();
+        this._rounds.push(round);
         this.round++;
         this._state = RoomState.Prepare;
         this._stateTimeout = setTimeout(this.nextState.bind(this), this._options.prepareTime * 1000);
@@ -109,9 +135,11 @@ class Room extends EventEmitter {
     this.emit(RoomEvent.StateChange);
   }
 
-  initNewRound() {
+  async initNewRound() {
     const round = new Round();
-    round.seed = this.generateChatSeed();
+    round.topic = await this.generateTopic();
+    this._bot.appendContext(round.topic);
+    round.addPlayer(this._botPlayer.id, generateName(round.playerNames));
     this._players.forEach((p) => {
       if (!p.isSpectator) {
         round.addPlayer(p.id, generateName(round.playerNames));
@@ -120,8 +148,9 @@ class Room extends EventEmitter {
     return round;
   }
 
-  generateChatSeed() {
-    return 'hello world';
+  async generateTopic() {
+    const provider = this._topicProviders[Math.floor(this._topicProviders.length * Math.random())];
+    return provider.provide();
   }
 
   reset() {
@@ -129,6 +158,7 @@ class Room extends EventEmitter {
     this._round = 0;
     this._rounds = [];
     this._stateTimeout = null;
+    this._bot.stop();
     this.players.forEach((p) => p.reset());
   }
 
@@ -176,6 +206,7 @@ class Room extends EventEmitter {
 
   addMessage(playerId, message) {
     this.currentRound.addMessage(playerId, message);
+    this._bot.appendContext(message);
   }
 }
 

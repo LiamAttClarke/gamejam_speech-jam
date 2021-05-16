@@ -22,16 +22,6 @@ const routes = [
     component: Chatroom
   },
   {
-    path: '/scores',
-    name: 'Score',
-    component: Score
-  },
-  {
-    path: '/about',
-    name: 'About',
-    component: About
-  },
-  {
     path: '/debug',
     name: 'Debug',
     component: Debug

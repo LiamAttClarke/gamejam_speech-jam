@@ -12,6 +12,8 @@ const store = new Vuex.Store({
       state: 'lobby',
       round: 0,
       host: null,
+      timerDuration: 0,
+      timerRemaining: 0,
       players: [],
       rounds: []
     }
@@ -21,7 +23,10 @@ const store = new Vuex.Store({
     roomDebug: state => JSON.stringify(state.room, null, 2),
     self: state => state.room.players.find(p => p.id === socket.id),
     isHost: state => state.room.host === socket.id,
-    currentRound: state => (state.room.rounds.length ? state.room.rounds[state.room.round] : null)
+    currentRound: state => (state.room.rounds.length ? state.room.rounds[state.room.round] : null),
+    timerProgress: state => state.room.timerRemaining / state.room.timerDuration,
+    timerMinutes: state => Math.floor(state.room.timerRemaining / 60),
+    timerSeconds: state => Math.floor(state.room.timerRemaining % 60),
   },
   mutations: {
     setRoom(state, room) {

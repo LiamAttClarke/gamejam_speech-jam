@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar color="primary" flat app clipped-left>
+    <v-app-bar color="white" elevation="2" app clipped-left>
       <v-app-bar-nav-icon class="no-events">
         <v-img contain max-height="50" max-width="50" src="./assets/goat.svg"></v-img>
       </v-app-bar-nav-icon>

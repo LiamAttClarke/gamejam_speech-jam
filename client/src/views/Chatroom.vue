@@ -74,18 +74,29 @@ export default {
   name: "ChatRoom",
   components: { VotingBar },
   data: () => ({
-    sticky: true,
     message: "",
   }),
   computed: {
     ...mapGetters(["room", "currentRound"]),
   },
   methods: {
+    scrollToEnd() {
+      var container = this.$el.querySelector(".messages");
+      container.scrollTop = container.scrollHeight + container.lastElementChild.offsetTop;
+    },
     sendMessage() {
       this.$store.dispatch("addMessage", this.message);
       this.message = "";
     },
   },
+  watch: {
+    currentRound: {
+        handler: function() {
+          //need to give some time or else we are always off by 1 element
+          setTimeout(() => this.scrollToEnd(), 100);
+        }
+    }
+  }
 };
 </script>
 

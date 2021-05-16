@@ -34,6 +34,15 @@ Compete with friends to blend in with the AI in a chatroom. Vote on the real AI,
    ```
 1. Website should automatically be opened, if not, visit URL printed in dev server terminal.
 
+1. Start the gpt2 container
+   ```
+   docker pull gcr.io/ai-responder/gpt2:latest  
+   docker run -p 8080:8080 --memory="2g" --cpus="1" gpt2
+   ```
+   You will have to change the default gpt2 url in constants.js to:  
+   ```
+   exports.GPT2_URL = 'localhost:8080';
+   ```
 ## Dev Notes
 
 - `open` module has been fixed at version 8.0.2 because of this issue: https://github.com/sindresorhus/open/issues/236

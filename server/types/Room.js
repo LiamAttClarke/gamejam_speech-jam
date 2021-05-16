@@ -6,9 +6,9 @@ const Player = require('./Player');
 const Round = require('./Round');
 const { BotEvent } = require('../lib/bots/BaseBot');
 const WikipediaProvider = require('../lib/topic-providers/WikipediaProvider');
-const GPT2Provider = require('../lib/topic-providers/GPT2Provider');
 const { BOT_NAME } = require('../constants');
 const { PreconditionNotSatisfied } = require('../errors');
+const { Timer, TimerEvent } = require('../lib/Timer');
 
 const RoomState = {
   Lobby: 'lobby',
@@ -41,7 +41,12 @@ class Room extends EventEmitter {
     this._players = new Map();
     this._rounds = [];
     this._options = { ...DEFAULT_ROOM_OPTIONS };
-    this._stateTimeout = null;
+    this._timer = new Timer(1000);
+    this._timer.on(TimerEvent.Tick, () => {
+      this.emit(RoomEvent.StateChange);
+    }).on(TimerEvent.End, () => {
+      this.nextState();
+    });
     this._bot = new GPT2Bot();
     this._botPlayer = new Player(uuid.v4(), BOT_NAME);
     this._bot.on(BotEvent.Message, (message) => {
@@ -78,6 +83,8 @@ class Room extends EventEmitter {
     return {
       id: this.id,
       state: this.state,
+      timerDuration: this._timer.durationMS / 1000,
+      timerRemaining: this._timer.remainingMS / 1000,
       round: this.round,
       host: this.host ? this.host.id : null,
       players: this.players,
@@ -107,22 +114,19 @@ class Room extends EventEmitter {
       const round = await this.initNewRound();
       this._rounds.push(round);
       this._state = RoomState.Prepare;
-      this._stateTimeout = setTimeout(this.nextState.bind(this), this._options.prepareTime * 1000);
+      this._timer.start(this._options.prepareTime * 1000);
       this.emit(RoomEvent.StateChange);
     } else if (this.state === RoomState.Prepare) {
-      clearTimeout(this._stateTimeout);
       this._state = RoomState.Chat;
       this.emit(RoomEvent.StateChange);
       this._bot.start();
-      this._stateTimeout = setTimeout(this.nextState.bind(this), this._options.chatTime * 1000);
+      this._timer.start(this._options.chatTime * 1000);
     } else if (this.state === RoomState.Chat) {
-      clearTimeout(this._stateTimeout);
       this._state = RoomState.Vote;
       this.emit(RoomEvent.StateChange);
       this._bot.stop();
-      this._stateTimeout = setTimeout(this.nextState.bind(this), this._options.voteTime * 1000);
+      this._timer.start(this._options.voteTime * 1000);
     } else if (this.state === RoomState.Vote) {
-      clearTimeout(this._stateTimeout);
       this._state = RoomState.Reveal;
       this.emit(RoomEvent.StateChange);
     } else if (this.state === RoomState.Reveal) {
@@ -131,7 +135,7 @@ class Room extends EventEmitter {
         this._rounds.push(round);
         this.round++;
         this._state = RoomState.Prepare;
-        this._stateTimeout = setTimeout(this.nextState.bind(this), this._options.prepareTime * 1000);
+        this._timer.start(this._options.prepareTime * 1000);
         this.emit(RoomEvent.StateChange);
       } else {
         this._state = RoomState.Lobby;

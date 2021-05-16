@@ -40,6 +40,7 @@ function resetRoom() {
 
 exports.initSockets = (io) => {
   room.on(RoomEvent.StateChange, () => {
+    console.log('STATE CHANGED');
     io.to(room.id).emit(ServerMessage.StateUpdate, room.serializeForClient());
   });
 

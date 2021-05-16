@@ -26,7 +26,7 @@ const DEFAULT_ROOM_OPTIONS = {
   rounds: 1,
   prepareTime: 10,
   chatTime: 60 * 2,
-  votingTime: 60 * 2,
+  voteTime: 60 * 2,
 };
 
 class Room extends EventEmitter {
@@ -48,6 +48,7 @@ class Room extends EventEmitter {
       this.addMessage(this._botPlayer.id, message);
       this.emit(RoomEvent.StateChange);
     });
+    this._bot.on(BotEvent.Error, (e) => this.emit(RoomEvent.Error, e));
     this._topicProviders = [
       new WikipediaProvider,
     ];
@@ -107,19 +108,23 @@ class Room extends EventEmitter {
       this._rounds.push(round);
       this._state = RoomState.Prepare;
       this._stateTimeout = setTimeout(this.nextState.bind(this), this._options.prepareTime * 1000);
+      this.emit(RoomEvent.StateChange);
     } else if (this.state === RoomState.Prepare) {
       clearTimeout(this._stateTimeout);
       this._state = RoomState.Chat;
+      this.emit(RoomEvent.StateChange);
       this._bot.start();
       this._stateTimeout = setTimeout(this.nextState.bind(this), this._options.chatTime * 1000);
     } else if (this.state === RoomState.Chat) {
       clearTimeout(this._stateTimeout);
       this._state = RoomState.Vote;
+      this.emit(RoomEvent.StateChange);
       this._bot.stop();
-      this._stateTimeout = setTimeout(this.nextState.bind(this), this._options.votingTime * 1000);
+      this._stateTimeout = setTimeout(this.nextState.bind(this), this._options.voteTime * 1000);
     } else if (this.state === RoomState.Vote) {
       clearTimeout(this._stateTimeout);
       this._state = RoomState.Reveal;
+      this.emit(RoomEvent.StateChange);
     } else if (this.state === RoomState.Reveal) {
       if (this.round < this._options.rounds - 1) {
         const round = await this.initNewRound();
@@ -127,12 +132,13 @@ class Room extends EventEmitter {
         this.round++;
         this._state = RoomState.Prepare;
         this._stateTimeout = setTimeout(this.nextState.bind(this), this._options.prepareTime * 1000);
+        this.emit(RoomEvent.StateChange);
       } else {
         this._state = RoomState.Lobby;
         this.reset();
+        this.emit(RoomEvent.StateChange);
       }
     }
-    this.emit(RoomEvent.StateChange);
   }
 
   async initNewRound() {

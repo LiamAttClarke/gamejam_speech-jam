@@ -1,15 +1,13 @@
 <template>
 
     <v-container>
-     <v-list three-line>
+     <v-list three-line v-if="currentRound">
 
-        <template v-for="(message, index) in messages">
-
+        <template v-for="(message, index) in currentRound.messages">
           <ChatMessage
-          v-bind:key="index"
-          v-bind:name="message.name">
+            :key="index"
+            :message="message">
           </ChatMessage>
-
         </template>
 
       </v-list>
@@ -26,20 +24,7 @@ export default {
   name: "ChatList",
   components: { ChatMessage },
   computed: {
-    ...mapGetters(["room", "isHost"]),
+    ...mapGetters(["room", "currentRound"]),
   },
-  data: () => ({
-    messages: [{name:"testing"},{},{}
-
-    ],
-  }),
-  methods: {
-    addMessage () {
-      console.log(this.messages);
-      //this.messages.push()
-      //this.marker = !this.marker
-    },
-  },
-
 };
 </script>

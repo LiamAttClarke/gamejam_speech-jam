@@ -9,17 +9,17 @@
       <Timer></Timer>
     </v-app-bar>
     <PlayerList></PlayerList>
-    <v-main class="d-inline-flex">
+    <v-main style="height: calc(100vh - 64px);">
       <router-view />
     </v-main>
-    <v-footer app class="primary">
+    <!-- <v-footer app class="primary">
       <v-col class="text-center">
         <p>
           Created by
           <a href="#">ToJelly</a> for ToJam 2021
         </p>
       </v-col>
-    </v-footer>
+    </v-footer> -->
   </v-app>
 </template>
 
@@ -28,14 +28,10 @@ import Timer from "./components/Timer.vue";
 import PlayerList from "./components/PlayerList.vue";
 
 export default {
-  components: { Timer, PlayerList },
   name: "App",
-  data: () => ({
-    //
-  }),
+  components: { Timer, PlayerList },
   watch: {
     "$store.state.room": function (newRoom, oldRoom) {
-      console.log(newRoom, oldRoom);
       if (newRoom.state !== oldRoom.state) {
         switch (newRoom.state) {
           case "lobby":

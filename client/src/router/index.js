@@ -5,7 +5,7 @@ import Debug from '../views/Debug.vue';
 
 import Lobby from '../views/Lobby.vue';
 import Chatroom from '../views/Chatroom.vue';
-import Score from '../views/Score.vue';
+import store from '../store';
 
 Vue.use(VueRouter);
 
@@ -18,12 +18,14 @@ const routes = [
   {
     path: '/game',
     name: 'Chatroom',
-    component: Chatroom
-  },
-  {
-    path: '/scores',
-    name: 'Score',
-    component: Score
+    component: Chatroom,
+    beforeEnter: (to, from, next) => {
+      if (store.state.room.state === 'lobby') {
+        next({ name: 'Lobby' });
+      } else {
+        next();
+      }
+    }
   },
   {
     path: '/debug',

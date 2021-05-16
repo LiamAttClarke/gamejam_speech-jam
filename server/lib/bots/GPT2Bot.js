@@ -13,11 +13,15 @@ module.exports = class GPT2Bot extends BaseBot {
     if (this.state !== BotState.Idle) return;
     this.awake();
     this._state = BotState.Chatting;
-    this.generateMessage();
+    try {
+      this.generateMessage();
+    } catch (e) {
+      console.error(e);
+      this.emit(BotEvent.Error, e);
+    }
   }
 
   stop() {
-    if (this.state !== BotState.Started) return;
     clearTimeout(this._timeout);
     this._state = BotState.Idle;
   }
@@ -42,7 +46,6 @@ module.exports = class GPT2Bot extends BaseBot {
     generatedText = generatedText.replace('<|endoftext|>',' ');
 
     console.log(`OUTPUT: <<<${generatedText}>>>`);
-
 
     if (this.state === BotState.Chatting) {
       if (generatedText) {

@@ -6,6 +6,7 @@ const BotState = {
 };
 
 const BotEvent = {
+  Error: 'error',
   Message: 'message',
 };
 

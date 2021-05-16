@@ -6,8 +6,8 @@
       </v-list-item-avatar>
 
       <v-list-item-content>
-        <v-list-item-title v-html="name"></v-list-item-title>
-        <v-list-item-subtitle v-html="message"></v-list-item-subtitle>
+        <v-list-item-title>{{ message.name }}</v-list-item-title>
+        <v-list-item-subtitle>{{ message.message }}</v-list-item-subtitle>
       </v-list-item-content>
 
       <v-list-item-avatar v-if="reverse == true">
@@ -21,17 +21,15 @@
 import { mapGetters } from "vuex";
 
 export default {
-  name: "CharMessage",
+  name: "ChatMessage",
   computed: {
     ...mapGetters(["room", "isHost"]),
   },
-  props: [
-      'messages'
-    ],
+  props: {
+    message: Object,
+  },
   data: () => ({
     avatar: 'https://placekitten.com/32/32',
-    name: 'John Snow',
-    message: `I'll be in your neighborhood doing errands this weekend. Do you want to hang out?`,
     reverse: true,
   }),
   methods: {

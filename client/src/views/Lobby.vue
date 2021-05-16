@@ -14,7 +14,29 @@
           </v-row>
         </v-form>
         <p>This is a game of wits and subterfuge. Can you tell the difference between your friends and the rogue AI Agent?</p>
-        <p>The game will start when everyone is ready or when the Host starts it.</p>
+        <p>
+          <ol>
+            <li><strong>Lobby:</strong> The game will start when everyone is ready or when the Host starts it.</li>
+            <li><strong>Chat Round:</strong> Everyone gets the same topic and gets to prepare messages, this is the time to trick your friends by mimicking GPT2.</li>
+            <li><strong>Vote Round:</strong> Use chat log evidence to deduce the bot and convince your friends to vote for you!</li>
+            <li><strong>Reveal Round:</strong> The bot is revealed and points are awarded.
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon
+                  color="primary"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  mdi-information
+                </v-icon>
+              </template>
+              <span>200 for a correct vote, 100 for being voted as bot</span>
+            </v-tooltip></li>
+          </ol>
+        </p>
+        <p><strong>Credits:</strong> Liam Clarke, Daria Anikanova, Victor Nguyen</p>
+        <p><strong>Created for 2021 ToJam</strong></p>
       </v-card-text>
     </v-card>
     <Menu v-if="isHost" class="ma-5"></Menu>

@@ -1,6 +1,7 @@
 const { Room, RoomState, RoomEvent } = require('./types/Room');
 const Player = require('./types/Player');
 const { DEFAULT_PLAYER_NAME } = require('./constants');
+const { PreconditionNotSatisfied } = require('./errors');
 
 const ServerMessage = {
   Error: 'error',
@@ -40,7 +41,6 @@ function resetRoom() {
 exports.initSockets = (io) => {
   room.on(RoomEvent.StateChange, () => {
     io.to(room.id).emit(ServerMessage.StateUpdate, room.serializeForClient());
-    logServer(`Continue To: ${room.state}`);
   });
 
   io.on('connect', (socket) => {
@@ -79,7 +79,7 @@ exports.initSockets = (io) => {
       logPlayer(player, `SetOptions: ${JSON.stringify(options)}`);
     });
 
-    socket.on(ClientMessage.Continue, () => {
+    socket.on(ClientMessage.Continue, async () => {
       if (!room.host && room.host.id === player.id) {
         socket.emit(ServerMessage.Error, ErrorMessage.HostOnly);
         return;
@@ -89,12 +89,16 @@ exports.initSockets = (io) => {
         return;
       }
       try {
-        room.nextState();
-        // io.in(room.id).emit(ServerMessage.StateUpdate, room.serializeForClient());
-        logPlayer(player, `Continue To: ${room.state}`);
+        await room.nextState();
       } catch (e) {
-        socket.emit(ServerMessage.Error, e.message);
+        if (e instanceof PreconditionNotSatisfied) {
+          socket.emit(ServerMessage.Error, e.message);
+        } else {
+          throw e;
+        }
       }
+      // io.in(room.id).emit(ServerMessage.StateUpdate, room.serializeForClient());
+      logPlayer(player, `Continue To: ${room.state}`);
     });
 
     socket.on(ClientMessage.Reset, () => {

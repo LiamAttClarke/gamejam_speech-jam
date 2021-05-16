@@ -2,6 +2,7 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const SocketIO = require('socket.io');
+const uuid  = require('uuid');
 const open = require('open');
 const { initSockets } = require('./api')
 
@@ -13,6 +14,7 @@ const CLIENT_DIST = path.join(__dirname, '../client/dist');
 const app = express();
 const httpServer = http.createServer(app);
 const io = SocketIO(httpServer, {});
+io.engine.generateId = uuid.v4;
 
 app.use(express.static(CLIENT_DIST));
 

@@ -27,8 +27,7 @@
         @keyup.enter="sendMessage"
         @click:append-outer="sendMessage"
       ></v-text-field>
-      <VotingBar></VotingBar>
-      <!-- <VotingBar v-if="room.state === 'vote'"></VotingBar> -->
+      <VotingBar v-if="room.state === 'vote'"></VotingBar>
     </div>
   </div>
 </template>
@@ -82,7 +81,8 @@ export default {
   methods: {
     scrollToEnd() {
       var container = this.$el.querySelector(".messages");
-      container.scrollTop = container.scrollHeight + container.lastElementChild.offsetTop;
+      container.scrollTop =
+        container.scrollHeight + container.lastElementChild.offsetTop;
     },
     sendMessage() {
       this.$store.dispatch("addMessage", this.message);
@@ -91,12 +91,12 @@ export default {
   },
   watch: {
     currentRound: {
-        handler: function() {
-          //need to give some time or else we are always off by 1 element
-          setTimeout(() => this.scrollToEnd(), 100);
-        }
-    }
-  }
+      handler: function () {
+        //need to give some time or else we are always off by 1 element
+        setTimeout(() => this.scrollToEnd(), 100);
+      },
+    },
+  },
 };
 </script>
 

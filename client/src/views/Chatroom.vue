@@ -1,10 +1,10 @@
 <template>
   <div class="chatroom">
     <div class="messages">
-      <div class="topic" v-if="currentRound">
+      <v-card class="topic py-2 px-4 mb-2" v-if="currentRound">
         <h2>Topic</h2>
         <p>{{ currentRound.topic }}</p>
-      </div>
+      </v-card>
       <ul class="messages__list">
         <li v-for="(message, index) in currentRound.messages" :key="index">
           <b>{{ message.playerName }}</b>

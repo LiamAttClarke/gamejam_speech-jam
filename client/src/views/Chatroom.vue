@@ -1,26 +1,10 @@
 <template>
 
-  <div fill-height>
-    <v-toolbar
-      dense
-      floating
-    >
-      <v-text-field
-        hide-details
-        prepend-icon="mdi-magnify"
-        single-line
-      ></v-text-field>
+  <v-container fill-height>
 
-      <v-btn icon>
-        <v-icon>mdi-crosshairs-gps</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
-    </v-toolbar>
      <v-card
         :z-index="-2"
+        :absolute="absolute"
         class="d-flex flex-column flex-grow-0 flex-shrink-0"
         flat
         tile
@@ -28,7 +12,7 @@
       >
         <v-card
           :class="1"
-          class="pa-2 mb-auto"
+          class="pa-2 mb-0"
           tile
         >
          <v-card-text>
@@ -41,25 +25,19 @@
             </div>
           </v-card-text>
         </v-card>
-        <v-card
-          class="pa-2 align-end ma-auto"
+        <v-container
+          class="pa-2 align-end overflow-y-auto mt-auto"
           flat
           tile
         >
-        <p>tests</p>
-        <p>tests</p>
-        <p>tests</p>
-        <p>tests</p>
-        <p>tests</p>
-        <p>tests</p>
-        <p>tests</p>
-        <p>tests</p>
-        <p>tests</p>
-        <p>tests</p>
+        <ChatList>
+      </ChatList>
 
-        </v-card>
+        </v-container>
+
         <v-card
           :class="1"
+          :absolute="absolute"
           class="pa-2 'mt-auto"
           flat
           tile
@@ -70,6 +48,7 @@
           class="chat_input align-self-end mx-auto"
           placeholder="Type Here..."
           :disabled="room.state === 'vote'"
+          hide-details="true"
           :value="message"
           v-model="message"
           append-outer-icon="mdi-send"
@@ -79,7 +58,7 @@
         </v-card>
       </v-card>
 
-  </div>
+  </v-container>
 
 </template>
 

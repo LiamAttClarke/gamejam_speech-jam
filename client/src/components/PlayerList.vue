@@ -19,9 +19,14 @@
         <v-checkbox label="Ready" :value="player.isReady" @change="onReady" color="success"></v-checkbox>
       </v-list-item>
     </v-list>
-    <template v-if="isHost" disabled v-slot:append>
+    <template v-if="isHost" v-slot:append>
       <div class="pa-2">
-        <v-btn color="accent" block @onClick="$store.dispatch('continue')">Force Start</v-btn>
+        <v-btn
+          color="accent"
+          :disabled="room.players.length < 2"
+          block
+          @onClick="$store.dispatch('continue')"
+        >Force Start</v-btn>
       </div>
     </template>
   </v-navigation-drawer>

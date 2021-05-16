@@ -1,15 +1,15 @@
 <template>
   <v-navigation-drawer :mini-variant="room.state !== 'lobby'" permanent clipped app width="500">
     <v-list>
-      <v-list-item v-for="player in room.players" :key="player.id"
-        :class="'player-info' +' '+ { 'active-class' : self.id == player.id}">
+      <v-list-item v-for="player in room.players" :key="player.id" class="player-info"
+        :class=" { 'grey lighten-3' : self.id == player.id}">
         <v-list-item-icon>
           <span class="text-h5">{{ player.avatar }}</span>
         </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title>
             <v-icon v-if="player.id === room.host" color="accent darken-1">mdi-crown</v-icon>
-            {{player.name}}
+            {{player.name}} <span v-if="self.id === player.id">(You)</span>
           </v-list-item-title>
         </v-list-item-content>
         <v-checkbox label="Ready" :value="player.isReady" @change="onReady" color="success"></v-checkbox>

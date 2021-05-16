@@ -1,9 +1,11 @@
 const axios = require('axios');
 const gpt = require('./gpt');
+const np = require('./NameProvider');
 
 const topics = {
   SPEECHJAM : 'https://speechjam-gpt2-43ucqvtxja-nn.a.run.app',
-  WIKI : 'https://en.wikipedia.org/api/rest_v1/page/random/summary'
+  WIKI : 'https://en.wikipedia.org/api/rest_v1/page/random/summary',
+  NAMES : ''
 }
 
 module.exports = class TopicProvider {
@@ -18,6 +20,9 @@ module.exports = class TopicProvider {
         break;
       case 1:
         endpoint = this.wikipedia;
+        break;
+      case 1:
+        endpoint = this.names;
         break;
       default:
         endpoint = this.wikipedia;
@@ -34,6 +39,13 @@ module.exports = class TopicProvider {
 
   async wikipedia(){
     const {data} = await axios.get(topics.WIKI);
+    console.log('Topic is from Wikipedia');
+    console.log(data.extract);
+    return data.extract;
+  }
+
+  async names(){
+    np.generateName()
     console.log('Topic is from Wikipedia');
     console.log(data.extract);
     return data.extract;

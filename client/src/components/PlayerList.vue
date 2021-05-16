@@ -1,26 +1,43 @@
 <template>
-  <v-navigation-drawer permanent clipped app>
-    <v-list color="primary">
-      <v-list-item>
+  <v-navigation-drawer permanent clipped app width="500">
+    <v-list>
+      <v-list-item v-for="player in room.players" :key="player.id" class="player-info">
         <v-list-item-icon>
-          <!-- Emoji Picked by Player -->
-          <v-icon color="accent">mdi-emoticon-happy-outline</v-icon>
+          <v-avatar>
+            <!-- Emoji Picked by Player -->
+            <v-icon>mdi-emoticon-happy-outline</v-icon>
+          </v-avatar>
         </v-list-item-icon>
-        <v-list-item-content>Player 1</v-list-item-content>
-        <!-- Toggle icon if player is host -->
-        <v-icon color="accent darken-1">mdi-crown</v-icon>
+        <v-list-item-content>
+          <v-list-item-title>{{player.name}}</v-list-item-title>
+          <v-list-item-subtitle>
+            <!-- Toggle icon if player is host -->
+            <v-icon v-if="player.id === room.host" color="accent darken-1">mdi-crown</v-icon>
+          </v-list-item-subtitle>
+        </v-list-item-content>
+
+        <!-- Add unique ids for each player -->
+        <v-checkbox label="Ready" :value="player.isReady" @change="onReady" color="success"></v-checkbox>
       </v-list-item>
     </v-list>
+    <template v-if="isHost" :disabled="room.players.length < 2" v-slot:append>
+      <div>
+        <v-btn color="accent" block>Force Start</v-btn>
+      </div>
+    </template>
   </v-navigation-drawer>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "PlayerList",
   computed: {
-    bigOrSmall: function () {
-      // Check which state the game is in
-      return false;
+    ...mapGetters(["room", "isHost"]),
+  },
+  methods: {
+    onReady(isReady) {
+      this.$store.dispatch("setReady", isReady);
     },
   },
 };

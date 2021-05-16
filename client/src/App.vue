@@ -10,7 +10,7 @@
       <v-spacer></v-spacer>
       <Timer></Timer>
     </v-app-bar>
-    <PlayerList></PlayerList>
+    <PlayerList />
     <v-main style="height: calc(100vh - 64px);">
       <router-view />
     </v-main>

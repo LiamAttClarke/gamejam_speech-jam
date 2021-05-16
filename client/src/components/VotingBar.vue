@@ -5,7 +5,6 @@
       <!-- Change Card Colour based on player -->
       <v-card
         class="pa-2"
-        color="grey"
         v-for="(player, index) in room.rounds[room.round].playerNames"
         :key="index"
       >

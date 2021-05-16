@@ -14,11 +14,12 @@
     </div>
     <div class="chatbar">
       <v-text-field
+        v-if="room.state === 'chat' || 'prepare'"
+        :disabled="room.state === 'prepare'"
         outlined
         dense
         class="chat_input align-self-end mx-auto"
-        placeholder="Type Here..."
-        :disabled="room.state !== 'chat'"
+        :placeholder="room.state === 'prepare' ? 'Read the Topic First' : 'Type Here...'"
         hide-details="true"
         :value="message"
         v-model="message"
@@ -26,6 +27,7 @@
         @keyup.enter="sendMessage"
         @click:append-outer="sendMessage"
       ></v-text-field>
+      <VotingBar v-if="room.state === 'vote'"></VotingBar>
     </div>
   </div>
 </template>
@@ -65,19 +67,22 @@
       </ChatList>
       */
 import { mapGetters } from "vuex";
+import VotingBar from "../components/VotingBar.vue";
 
 export default {
   name: "ChatRoom",
+  components: { VotingBar },
   data: () => ({
     message: "",
   }),
   computed: {
-    ...mapGetters(["room", 'currentRound']),
+    ...mapGetters(["room", "currentRound"]),
   },
   methods: {
     scrollToEnd() {
       var container = this.$el.querySelector(".messages");
-      container.scrollTop = container.scrollHeight + container.lastElementChild.offsetTop;
+      container.scrollTop =
+        container.scrollHeight + container.lastElementChild.offsetTop;
     },
     sendMessage() {
       this.$store.dispatch("addMessage", this.message);
@@ -86,12 +91,12 @@ export default {
   },
   watch: {
     currentRound: {
-        handler: function() {
-          //need to give some time or else we are always off by 1 element
-          setTimeout(() => this.scrollToEnd(), 100);
-        }
-    }
-  }
+      handler: function () {
+        //need to give some time or else we are always off by 1 element
+        setTimeout(() => this.scrollToEnd(), 100);
+      },
+    },
+  },
 };
 </script>
 

@@ -13,22 +13,22 @@
       </ul>
     </div>
     <div class="chatbar">
-      <v-text-field
-        v-if="room.state === 'chat' || room.state === 'prepare'"
-        :disabled="room.state === 'prepare'"
-        outlined
-        dense
-        class="chat_input align-self-end mx-auto"
-        :placeholder="room.state === 'prepare' ? 'Read the Topic First' : 'Type Here...'"
-        hide-details="true"
-        :value="message"
-        v-model="message"
-        @keyup.enter="sendMessage"
-      >
-        <template v-slot:append-outer>
-          <v-btn @click="sendMessage">Submit</v-btn>
-        </template>
-      </v-text-field>
+      <v-row>
+        <v-text-field
+          v-if="room.state === 'chat' || room.state === 'prepare'"
+          :disabled="room.state === 'prepare'"
+          outlined
+          dense
+          class="chat_input align-self-end mx-auto"
+          placeholder="Type Here..."
+          hide-details="true"
+          :value="message"
+          v-model="message"
+          @keyup.enter="sendMessage"
+        ></v-text-field>
+        <v-btn class="ml-1" :disabled="room.state !== 'chat' " @click="sendMessage">Submit</v-btn>
+      </v-row>
+
       <VotingBar v-if="room.state === 'vote'"></VotingBar>
     </div>
   </div>
@@ -87,7 +87,7 @@ export default {
         container.scrollHeight + container.lastElementChild.offsetTop;
     },
     sendMessage() {
-      if (room.state === "chat") {
+      if (this.room.state === "chat") {
         this.$store.dispatch("addMessage", this.message);
         this.message = "";
       }

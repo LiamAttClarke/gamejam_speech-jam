@@ -5,7 +5,7 @@
       <!-- Change Card Colour based on player -->
       <v-card
         class="pa-2"
-        v-for="player in room.activePlayers"
+        v-for="player in activePlayers"
         :key="player.id"
       >
         <div class="d-flex justify-space-between align-center">
@@ -17,9 +17,9 @@
             />
           </v-avatar>
           <span>{{ player.anonName }}</span>
-          <v-card-action>
+          <v-card-actions>
             <v-btn color="success" @click="() => $store.dispatch('vote', player.id)">Vote</v-btn>
-          </v-card-action>
+          </v-card-actions>
         </div>
       </v-card>
     </div>
@@ -31,7 +31,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "VotingBar",
   computed: {
-    ...mapGetters(["room"]),
+    ...mapGetters(["room", 'activePlayers']),
   },
 };
 </script>

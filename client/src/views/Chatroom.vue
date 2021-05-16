@@ -26,8 +26,8 @@
         @keyup.enter="sendMessage"
       >
         <template v-slot:append-outer>
-          <v-btn icon color="primary" @click="sendMessage">
-            <v-icon>mdi-send</v-icon>
+          <v-btn color="primary" @click="sendMessage">
+            Send
           </v-btn>
         </template>
       </v-text-field>

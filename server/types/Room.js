@@ -178,7 +178,7 @@ class Room extends EventEmitter {
   }
 
   reset() {
-    this._timer.stop();
+    this._timer.cancel();
     this._state = RoomState.Lobby;
     this._round = 0;
     this._rounds = [];

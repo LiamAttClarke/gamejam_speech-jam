@@ -7,7 +7,7 @@
     <div class="grid-container">
       <v-card
         class="pa-2"
-        v-for="player in activePlayers"
+        v-for="player in room.chatPlayers"
         :disabled="room.state !== 'vote'"
         @click="() => $store.dispatch('vote', player.id)"
         :key="player.id"

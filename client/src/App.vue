@@ -14,14 +14,6 @@
     <v-main style="height: calc(100vh - 64px);">
       <router-view />
     </v-main>
-    <!-- <v-footer app class="primary">
-      <v-col class="text-center">
-        <p>
-          Created by
-          <a href="#">ToJelly</a> for ToJam 2021
-        </p>
-      </v-col>
-    </v-footer> -->
   </v-app>
 </template>
 

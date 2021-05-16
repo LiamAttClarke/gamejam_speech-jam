@@ -43,4 +43,8 @@ export default {
   },
 };
 </script>
-
+<style lang="scss" scoped>
+.player-info {
+  border-bottom: 1px solid black;
+}
+</style>

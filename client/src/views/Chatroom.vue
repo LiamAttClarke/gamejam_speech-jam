@@ -14,11 +14,12 @@
     </div>
     <div class="chatbar">
       <v-text-field
+        v-if="room.state === 'chat' || 'prepare'"
+        :disabled="room.state === 'prepare'"
         outlined
         dense
         class="chat_input align-self-end mx-auto"
-        placeholder="Type Here..."
-        :disabled="room.state !== 'chat'"
+        :placeholder="room.state === 'prepare' ? 'Read the Topic First' : 'Type Here...'"
         hide-details="true"
         :value="message"
         v-model="message"
@@ -26,6 +27,8 @@
         @keyup.enter="sendMessage"
         @click:append-outer="sendMessage"
       ></v-text-field>
+      <VotingBar></VotingBar>
+      <!-- <VotingBar v-if="room.state === 'vote'"></VotingBar> -->
     </div>
   </div>
 </template>
@@ -65,15 +68,17 @@
       </ChatList>
       */
 import { mapGetters } from "vuex";
+import VotingBar from "../components/VotingBar.vue";
 
 export default {
   name: "ChatRoom",
+  components: { VotingBar },
   data: () => ({
     sticky: true,
     message: "",
   }),
   computed: {
-    ...mapGetters(["room", 'currentRound']),
+    ...mapGetters(["room", "currentRound"]),
   },
   methods: {
     sendMessage() {

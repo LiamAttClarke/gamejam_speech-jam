@@ -72,7 +72,6 @@ socket.on('error', error => {
 });
 
 socket.on('update:state', room => {
-  console.log(room);
   store.commit('setRoom', room);
 });
 

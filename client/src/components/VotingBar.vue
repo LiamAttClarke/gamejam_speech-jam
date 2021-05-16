@@ -4,7 +4,7 @@
 
     <div class="grid-container">
       <!-- Change Card Colour based on player -->
-      <v-card class="pa-2" v-for="player in room.activePlayers" :key="player.id">
+      <v-card class="pa-2" v-for="player in activePlayers" :key="player.id">
         <div class="d-flex justify-space-between align-center">
           <!-- Put Avatars Here -->
           <v-avatar size="56">
@@ -14,9 +14,9 @@
           <v-card-action>
             <v-btn
               v-if="selected !== player"
-              color="success"
+              color="primary"
               @click="() => $store.dispatch('vote', player.id)"
-            >Vote!</v-btn>
+            >Vote</v-btn>
           </v-card-action>
         </div>
       </v-card>

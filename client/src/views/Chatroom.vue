@@ -17,7 +17,7 @@
         <v-text-field
           outlined
           dense
-          class="chat_input align-self-end mx-auto my-auto"
+          class="chat_input mx-auto my-auto"
           placeholder="Type Here..."
           hide-details="true"
           :value="message"
@@ -61,6 +61,19 @@
   flex-shrink: 0;
   padding: 16px;
   border-top: solid 1px #ccc;
+}
+
+.chatbar__input {
+  display: flex;
+  align-items: center;
+}
+
+.chatbar__input > * {
+  margin-right: 8px;
+}
+
+.chatbar__input:last-child {
+  margin-right: 0;
 }
 </style>
 

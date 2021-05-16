@@ -1,6 +1,6 @@
 <template>
   <span>
-    <h1> {{ currentRoom }} </h1>
+    <h1> {{ currentRoom }} <span v-if="currentRound >= 0">Round: {{ currentRound }} </span></h1>
   </span>
 </template>
 
@@ -10,14 +10,15 @@ import { mapGetters } from "vuex";
 export default {
   name: "RoundIndicator",
   data: () => ({
-    currentRoom: "aa",
+    currentRoom: "",
+    currentRound: -1,
   }),
   computed: {
     ...mapGetters(["room"]),
   },
   watch: {
     "$store.state.room": function (newRoom, oldRoom) {
-
+      this.currentRound = newRoom.round;
       switch (newRoom.state) {
         case "lobby":
           this.currentRoom = "Lobby";

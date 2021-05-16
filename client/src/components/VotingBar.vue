@@ -3,22 +3,19 @@
     <h2 class="mb-2">Time to Vote! Who is the real AI?</h2>
 
     <div class="grid-container">
-      <!-- Change Card Colour based on player -->
-      <v-card class="pa-2" v-for="player in activePlayers" :key="player.id">
-        <div class="d-flex justify-space-between align-center">
-          <!-- Put Avatars Here -->
+      <v-card
+        class="pa-2"
+        v-for="player in activePlayers"
+        :disabled="room.state !== 'vote'"
+        @click="() => $store.dispatch('vote', player.id)"
+        :key="player.id"
+      >
+        <v-card-title class="d-flex pa-0">
           <v-avatar size="56">
-            <v-img src="http://placekitten.com/200/300"></v-img>
+            <span class="text-h5">{{ player.avatar }}</span>
           </v-avatar>
           <span>{{ player.anonName }}</span>
-          <v-card-action>
-            <v-btn
-              v-if="selected !== player"
-              color="primary"
-              @click="() => $store.dispatch('vote', player.id)"
-            >Vote</v-btn>
-          </v-card-action>
-        </div>
+        </v-card-title>
       </v-card>
     </div>
   </div>
@@ -44,7 +41,10 @@ export default {
 }
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   grid-gap: 0.5rem;
+}
+.active {
+  color: green;
 }
 </style>

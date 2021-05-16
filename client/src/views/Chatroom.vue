@@ -23,10 +23,11 @@
         hide-details="true"
         :value="message"
         v-model="message"
-        @keyup.enter="room.state === 'chat' ? sendMessage : ''"
+        @keyup.enter="sendMessage"
       >
-        <!-- Slot template, append outer -->
-        <v-btn @click="sendMessage">Submit</v-btn>
+        <template v-slot:append-outer>
+          <v-btn @click="sendMessage">Submit</v-btn>
+        </template>
       </v-text-field>
       <VotingBar v-if="room.state === 'vote'"></VotingBar>
     </div>
@@ -86,8 +87,10 @@ export default {
         container.scrollHeight + container.lastElementChild.offsetTop;
     },
     sendMessage() {
-      this.$store.dispatch("addMessage", this.message);
-      this.message = "";
+      if (room.state === "chat") {
+        this.$store.dispatch("addMessage", this.message);
+        this.message = "";
+      }
     },
   },
   watch: {

@@ -11,7 +11,13 @@
             {{player.name}}
           </v-list-item-title>
         </v-list-item-content>
-        <v-checkbox label="Ready" :value="player.isReady" @change="onReady" color="success"></v-checkbox>
+        <v-checkbox
+          label="Ready"
+          :disabled="self.id !== player.id"
+          :value="player.isReady"
+          @change="onReady"
+          color="success"
+        ></v-checkbox>
       </v-list-item>
     </v-list>
     <template v-if="isHost" v-slot:append>
@@ -33,7 +39,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "PlayerList",
   computed: {
-    ...mapGetters(["room", "isHost"]),
+    ...mapGetters(["room", "isHost", "self"]),
   },
   methods: {
     onReady(isReady) {

@@ -1,21 +1,23 @@
 <template>
   <div>
-    <v-card>
+    <v-card class="ma-5">
       <v-card-title>How To Play</v-card-title>
       <v-card-text>
         <v-form>
           <v-row>
             <v-col>
-              <v-text-field v-model="name" placeholder="Choose a Username" outlined dense></v-text-field>
+              <v-text-field outlined v-model="name" placeholder="Choose a Username" dense></v-text-field>
             </v-col>
             <v-col>
-              <v-btn color="success" @click="onChangeName">Save</v-btn>
+              <v-btn color="success" @click.prevent="onChangeName">Save</v-btn>
             </v-col>
           </v-row>
-        </v-form>This is a game of wits and subterfuge. Can you tell the difference between your friends and the rogue AI Agent?
+        </v-form>
+        <p>This is a game of wits and subterfuge. Can you tell the difference between your friends and the rogue AI Agent?</p>
+        <p>The game will start when everyone is ready or when the Host starts it.</p>
       </v-card-text>
     </v-card>
-    <Menu v-if="isHost"></Menu>
+    <Menu v-if="isHost" class="ma-5"></Menu>
   </div>
 </template>
 <script>

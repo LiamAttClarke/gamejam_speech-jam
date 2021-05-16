@@ -67,6 +67,16 @@ class Room extends EventEmitter {
     return Array.from(this._players.values());
   }
 
+  get activePlayers() {
+    const activePlayers = [];
+    this._players.forEach((player) => {
+      if (!player.isSpectator) {
+        activePlayers.push(player);
+      }
+    });
+    return activePlayers;
+  }
+
   get rounds() {
     return this._rounds;
   }
@@ -188,11 +198,14 @@ class Room extends EventEmitter {
     if (typeof playerId !== 'string') throw new Error(`Room.removePlayer expects a string (Player.id). Got: ${playerId}`);
     this._players.delete(playerId);
     if (this.host && this.host.id === playerId) {
-      if (this.players.length) {
-        this.host = this.players[0];
+      if (this.activePlayers.length) {
+        this.host = this.activePlayers[0];
       } else {
         this.reset();
       }
+    }
+    if (this.state !== RoomState.Lobby && this.activePlayers.length < 2) {
+      this.reset();
     }
   }
 

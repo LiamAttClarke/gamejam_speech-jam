@@ -12,7 +12,13 @@
             {{player.name}} <span v-if="self.id === player.id">(You)</span>
           </v-list-item-title>
         </v-list-item-content>
-        <v-checkbox label="Ready" :value="player.isReady" @change="onReady" color="success"></v-checkbox>
+        <v-checkbox
+          label="Ready"
+          :disabled="self.id !== player.id"
+          :value="player.isReady"
+          @change="onReady"
+          color="success"
+        ></v-checkbox>
       </v-list-item>
     </v-list>
     <template v-if="isHost" v-slot:append>

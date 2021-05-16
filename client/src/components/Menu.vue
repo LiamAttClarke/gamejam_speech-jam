@@ -7,24 +7,59 @@
           <v-row>
             <v-col>
               <v-select
+                label="Prep Time"
+                dense
                 :value="room.options.prepareTime"
+                outlined
                 :items="prepareTimeOptions"
                 @change="(v) => $store.dispatch('setOptions', { prepareTime: v })"
               ></v-select>
             </v-col>
             <v-col>
               <v-select
+                label="Chat Time"
+                dense
                 :value="room.options.chatTime"
+                outlined
                 :items="chatTimeOptions"
                 @change="(v) => $store.dispatch('setOptions', { chatTime: v })"
               ></v-select>
             </v-col>
             <v-col>
               <v-select
+                label="Vote Time"
+                dense
                 :value="room.options.voteTime"
+                outlined
                 :items="voteTimeOptions"
                 @change="(v) => $store.dispatch('setOptions', { voteTime: v })"
               ></v-select>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-slider
+                :value="room.options.rounds"
+                label="Number of Rounds"
+                thumb-label
+                style="width:50%"
+                max="50"
+                min="1"
+                @change="(v) => $store.dispatch('setOptions', { rounds: v })"
+              >
+                <template v-slot:append>
+                  <v-text-field
+                    v-model="room.options.rounds"
+                    class="mt-0 pt-0"
+                    hide-details
+                    outlined
+                    single-line
+                    dense
+                    type="number"
+                    style="width: 60px"
+                  ></v-text-field>
+                </template>
+              </v-slider>
             </v-col>
           </v-row>
         </v-form>

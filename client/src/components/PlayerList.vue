@@ -21,9 +21,7 @@
       </v-list-item>
     </v-list>
     <template v-if="isHost" :disabled="room.players.length < 2" v-slot:append>
-      <div>
-        <v-btn color="accent" block>Force Start</v-btn>
-      </div>
+      <v-btn color="accent" @onClick="$store.dispatch('continue')" block>Force Start</v-btn>
     </template>
   </v-navigation-drawer>
 </template>

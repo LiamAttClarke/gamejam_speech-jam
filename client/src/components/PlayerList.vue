@@ -45,7 +45,6 @@ export default {
   methods: {
     onReady(isReady) {
       this.$store.dispatch("setReady", isReady);
-      console.log(self.id);
     },
   },
 };

@@ -20,7 +20,7 @@ const store = new Vuex.Store({
   },
   getters: {
     room: state => state.room,
-    activePlayers: state => state.players.filter((p) => !p.isSpectator),
+    activePlayers: state => state.room.players.filter((p) => !p.isSpectator),
     self: state => state.room.players.find(p => p.id === socket.id),
     isHost: state => state.room.host === socket.id,
     currentRound: state => (state.room.rounds.length ? state.room.rounds[state.room.round] : null),
@@ -72,7 +72,6 @@ socket.on('error', error => {
 });
 
 socket.on('update:state', room => {
-  console.log(room);
   store.commit('setRoom', room);
 });
 

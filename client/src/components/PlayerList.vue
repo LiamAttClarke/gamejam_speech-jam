@@ -3,8 +3,7 @@
     <v-list>
       <v-list-item v-for="player in room.players" :key="player.id" class="player-info">
         <v-list-item-icon>
-          <!-- Emoji Picked by Player -->
-          <v-icon>mdi-emoticon-happy-outline</v-icon>
+          <span class="text-h5">{{ player.avatar }}</span>
         </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title>

@@ -18,10 +18,7 @@
           </v-avatar>
           <span>{{ room.state === 'vote' ? player.anonName : player.name}}</span>
         </v-card-title>
-        <v-card-subtitle
-          class="text-center"
-          v-if="room.state === 'reveal'"
-        >Score: {{ player.score }}</v-card-subtitle>
+        <v-card-subtitle v-if="room.state === 'reveal'">Score: {{ player.score }}</v-card-subtitle>
       </v-card>
     </div>
   </div>

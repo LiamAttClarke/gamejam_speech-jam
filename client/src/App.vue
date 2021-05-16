@@ -6,9 +6,11 @@
       </v-app-bar-nav-icon>
       <v-toolbar-title>SpeechJam</v-toolbar-title>
       <v-spacer></v-spacer>
+      <RoundIndicator></RoundIndicator>
+      <v-spacer></v-spacer>
       <Timer></Timer>
     </v-app-bar>
-    <PlayerList></PlayerList>
+    <PlayerList />
     <v-main style="height: calc(100vh - 64px);">
       <router-view />
     </v-main>
@@ -25,11 +27,12 @@
 
 <script>
 import Timer from "./components/Timer.vue";
+import RoundIndicator from "./components/RoundIndicator.vue";
 import PlayerList from "./components/PlayerList.vue";
 
 export default {
   name: "App",
-  components: { Timer, PlayerList },
+  components: { Timer, RoundIndicator, PlayerList },
   watch: {
     "$store.state.room": function (newRoom, oldRoom) {
       if (newRoom.state !== oldRoom.state) {

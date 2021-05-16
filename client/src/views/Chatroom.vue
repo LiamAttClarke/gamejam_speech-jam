@@ -14,7 +14,7 @@
     </div>
     <div class="chatbar">
       <v-text-field
-        v-if="room.state === 'chat' || 'prepare'"
+        v-if="room.state === 'chat' || room.state === 'prepare'"
         :disabled="room.state === 'prepare'"
         outlined
         dense

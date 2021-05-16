@@ -2,6 +2,7 @@ const { Room, RoomState, RoomEvent } = require('./types/Room');
 const Player = require('./types/Player');
 const { DEFAULT_PLAYER_NAME } = require('./constants');
 const { PreconditionNotSatisfied } = require('./errors');
+const generateAvatar = require('./lib/avatar-generator');
 
 const ServerMessage = {
   Error: 'error',
@@ -47,6 +48,7 @@ exports.initSockets = (io) => {
     anonNameCounter++;
     const player = new Player(socket.id, {
       name: `${DEFAULT_PLAYER_NAME}${anonNameCounter}`,
+      avatar: generateAvatar(room.players.map((p) => p.avatar)),
       isSpectator: room.state !== RoomState.Lobby,
     });
     room.addPlayer(player);

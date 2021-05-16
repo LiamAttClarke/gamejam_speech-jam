@@ -6,7 +6,7 @@ const Player = require('./Player');
 const Round = require('./Round');
 const { BotEvent } = require('../lib/bots/BaseBot');
 const WikipediaProvider = require('../lib/topic-providers/WikipediaProvider');
-const { BOT_NAME } = require('../constants');
+const { BOT_NAME,BOT_AVATAR } = require('../constants');
 const { PreconditionNotSatisfied } = require('../errors');
 const { Timer, TimerEvent } = require('../lib/Timer');
 
@@ -26,7 +26,7 @@ const DEFAULT_ROOM_OPTIONS = {
   rounds: 1,
   prepareTime: 10,
   chatTime: 60 * 2,
-  voteTime: 60 * 2,
+  voteTime: 60 * 3,
 };
 
 class Room extends EventEmitter {
@@ -48,7 +48,7 @@ class Room extends EventEmitter {
       this.nextState();
     });
     this._bot = new GPT2Bot();
-    this._botPlayer = new Player(uuid.v4(), BOT_NAME);
+    this._botPlayer = new Player(uuid.v4(), { name: BOT_NAME, avatar: BOT_AVATAR });
     this._bot.on(BotEvent.Message, (message) => {
       this.addMessage(this._botPlayer.id, message);
       this.emit(RoomEvent.StateChange);

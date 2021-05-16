@@ -1,12 +1,10 @@
 <template>
-  <v-navigation-drawer permanent clipped app width="500">
+  <v-navigation-drawer :mini-variant="room.state !== 'lobby'" permanent clipped app width="500">
     <v-list>
       <v-list-item v-for="player in room.players" :key="player.id" class="player-info">
         <v-list-item-icon>
-          <v-avatar>
-            <!-- Emoji Picked by Player -->
-            <v-icon>mdi-emoticon-happy-outline</v-icon>
-          </v-avatar>
+          <!-- Emoji Picked by Player -->
+          <v-icon>mdi-emoticon-happy-outline</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title>
@@ -14,8 +12,6 @@
             {{player.name}}
           </v-list-item-title>
         </v-list-item-content>
-
-        <!-- Add unique ids for each player -->
         <v-checkbox label="Ready" :value="player.isReady" @change="onReady" color="success"></v-checkbox>
       </v-list-item>
     </v-list>

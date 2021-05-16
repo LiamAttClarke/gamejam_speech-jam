@@ -9,7 +9,7 @@
               <v-text-field outlined v-model="name" placeholder="Choose a Username" dense></v-text-field>
             </v-col>
             <v-col>
-              <v-btn color="success" @click="onChangeName">Save</v-btn>
+              <v-btn color="success" @click.prevent="onChangeName">Save</v-btn>
             </v-col>
           </v-row>
         </v-form>

@@ -1,5 +1,5 @@
 const { v4: uuid } = require('uuid');
-const EventEmitter = require('../EventEmitter');
+const EventEmitter = require('../lib/EventEmitter');
 const Player = require('./Player');
 const Round = require('./Round');
 
@@ -164,10 +164,6 @@ class Room extends EventEmitter {
     } else {
       throw new Error(`Player '${playerId}' not found.`);
     }
-  }
-
-  setImposterVote(playerId, anonPlayerName) {
-    this.currentRound.setImposterVote(playerId, anonPlayerName);
   }
 
   addPoints(playerId, points) {

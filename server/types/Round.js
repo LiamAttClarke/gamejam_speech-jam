@@ -7,7 +7,7 @@ module.exports = class Round {
     // Player.id -> anonymous name
     this._anonPlayerNames = new Map();
     // Player.id -> Player.id
-    this._imposterVotes = new Map();
+    this._votes = new Map();
   }
 
   get playerNames() {
@@ -18,8 +18,8 @@ module.exports = class Round {
     return this._messages;
   }
 
-  get imposterVotes() {
-    return Object.fromEntries(this._imposterVotes);
+  get votes() {
+    return Object.fromEntries(this._votes);
   }
 
   addPlayer(playerId, anonName) {
@@ -32,7 +32,7 @@ module.exports = class Round {
     this._messages.push(new Message(playerName, message));
   }
 
-  setImposterVote(playerId, anonPlayerName) {
+  setVote(playerId, anonPlayerName) {
     let targetId = null;
     for (const [id, name] of this._anonPlayerNames.entries()) {
       if (anonPlayerName === name) {
@@ -40,7 +40,7 @@ module.exports = class Round {
       }
     }
     if (!targetId) throw new Error(`No player found with anonymouse name '${anonPlayerName}'.`)
-    this._imposterVotes.set(playerId, targetId)
+    this._votes.set(playerId, targetId)
   }
 
   serializeForClient() {
@@ -48,7 +48,7 @@ module.exports = class Round {
       seed: this.seed,
       playerNames: this.playerNames,
       messages: this.messages,
-      imposterVotes: this.imposterVotes
+      votes: this.votes
     };
   }
 }

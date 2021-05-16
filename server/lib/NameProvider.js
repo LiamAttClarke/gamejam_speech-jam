@@ -7,7 +7,7 @@ const config = [
   [adjectives, colors, animals]
 ]
 
-module.exports = function generateName(reservedNames) {
+module.exports = function generateName(reservedNames = []) {
   while (true) {
     const randomInt = Math.floor(Math.random() * config.length);
     const name = uniqueNamesGenerator({

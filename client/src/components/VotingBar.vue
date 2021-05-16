@@ -5,8 +5,8 @@
       <!-- Change Card Colour based on player -->
       <v-card
         class="pa-2"
-        v-for="(player, index) in room.rounds[room.round].playerNames"
-        :key="index"
+        v-for="player in room.activePlayers"
+        :key="player.id"
       >
         <div class="d-flex justify-space-between align-center">
           <!-- Put Avatars Here -->
@@ -16,9 +16,9 @@
               src="https://cdn.pixabay.com/photo/2020/06/24/19/12/cabbage-5337431_1280.jpg"
             />
           </v-avatar>
-          {{player}}
+          <span>{{ player.anonName }}</span>
           <v-card-action>
-            <v-btn color="success" @click="$store.dispatch('vote', player)">Vote!</v-btn>
+            <v-btn color="success" @click="() => $store.dispatch('vote', player.id)">Vote</v-btn>
           </v-card-action>
         </div>
       </v-card>
@@ -31,7 +31,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "VotingBar",
   computed: {
-    ...mapGetters(["room", "isHost"]),
+    ...mapGetters(["room"]),
   },
 };
 </script>

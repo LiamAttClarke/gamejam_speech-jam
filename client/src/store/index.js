@@ -20,7 +20,7 @@ const store = new Vuex.Store({
   },
   getters: {
     room: state => state.room,
-    roomDebug: state => JSON.stringify(state.room, null, 2),
+    activePlayers: state => state.players.filter((p) => !p.isSpectator),
     self: state => state.room.players.find(p => p.id === socket.id),
     isHost: state => state.room.host === socket.id,
     currentRound: state => (state.room.rounds.length ? state.room.rounds[state.room.round] : null),
@@ -43,8 +43,8 @@ const store = new Vuex.Store({
     addMessage(context, message) {
       socket.emit('add:message', message);
     },
-    vote(context, anonName) {
-      socket.emit('set:vote', anonName);
+    vote(context, playerId) {
+      socket.emit('set:vote', playerId);
     },
     setOptions(context, options) {
       socket.emit('set:options', options);

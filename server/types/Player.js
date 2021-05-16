@@ -6,9 +6,11 @@ module.exports = class Player {
     this.id = id;
     this.avatar = options.avatar || avatarGenerator();
     this.name = options.name || DEFAULT_PLAYER_NAME;
+    this.anonName = options.anonName || DEFAULT_PLAYER_NAME,
     this.score = options.score || 0;
     this.isSpectator = options.isSpectator || false;
     this.isReady = options.isReady || false;
+    this.vote = null;
   }
 
   reset() {

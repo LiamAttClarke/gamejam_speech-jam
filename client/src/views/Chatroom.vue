@@ -7,7 +7,7 @@
       </v-card>
       <ul class="messages__list">
         <li v-for="(message, index) in currentRound.messages" :key="index">
-          <b>{{ message.playerName }}</b>
+          <b>{{ message.player.anonName }}</b>
           <p>{{ message.message }}</p>
         </li>
       </ul>
@@ -26,7 +26,9 @@
         @keyup.enter="sendMessage"
       >
         <template v-slot:append-outer>
-          <v-btn @click="sendMessage">Submit</v-btn>
+          <v-btn icon color="primary" @click="sendMessage">
+            <v-icon>mdi-send</v-icon>
+          </v-btn>
         </template>
       </v-text-field>
       <VotingBar v-if="room.state === 'vote'"></VotingBar>
@@ -87,7 +89,7 @@ export default {
         container.scrollHeight + container.lastElementChild.offsetTop;
     },
     sendMessage() {
-      if (room.state === "chat") {
+      if (this.room.state === "chat") {
         this.$store.dispatch("addMessage", this.message);
         this.message = "";
       }

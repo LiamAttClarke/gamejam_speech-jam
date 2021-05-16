@@ -32,7 +32,7 @@ module.exports = class GPT2Bot extends BaseBot {
     const prefix = this._context.slice(-500);
     const { data } = await axios.post(GPT2_URL, {
       prefix,
-      length: Math.floor(10 + Math.random() * 25),
+      length: Math.floor(5 + Math.random() * 10),
       temperature: 1, // recommended range: 0.7 - 1.0
     });
     let generatedText = data.text;

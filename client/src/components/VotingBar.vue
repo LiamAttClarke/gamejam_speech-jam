@@ -12,7 +12,7 @@
       >
         <v-card-title class="d-flex pa-0">
           <v-avatar size="56">
-            <span class="text-h5">{{ player.avatar }}</span>
+            <span class="text-h5">{{ room.state === 'vote' ? '🤖' : player.avatar }}</span>
           </v-avatar>
           <span>{{ player.anonName }}</span>
         </v-card-title>

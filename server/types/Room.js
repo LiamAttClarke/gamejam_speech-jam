@@ -54,6 +54,7 @@ class Room extends EventEmitter {
       this.emit(RoomEvent.StateChange);
     });
     this._bot.on(BotEvent.Error, (e) => this.emit(RoomEvent.Error, e));
+    this._currentRoundSeed = Math.random();
   }
 
   get state() {
@@ -72,6 +73,12 @@ class Room extends EventEmitter {
       }
     });
     return activePlayers;
+  }
+
+  get chatPlayers() {
+    const players = this.activePlayers;
+    players.push(this._botPlayer);
+    return players.sort((a, b) => this._currentRoundSeed - 0.5)
   }
 
   get rounds() {
@@ -95,6 +102,7 @@ class Room extends EventEmitter {
       round: this.round,
       host: this.host ? this.host.id : null,
       players: this.players,
+      chatPlayers: this.chatPlayers,
       botPlayer: this._botPlayer,
       rounds: this.rounds.map((r) => r.serializeForClient()),
       options: this._options,
@@ -184,6 +192,7 @@ class Room extends EventEmitter {
     this._rounds = [];
     this._bot.stop();
     this.players.forEach((p) => p.reset());
+    this._currentRoundSeed = Math.random();
   }
 
   playerWithName(name) {

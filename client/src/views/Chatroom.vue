@@ -13,8 +13,9 @@
       </ul>
     </div>
     <div class="chatbar">
-      <v-row v-if="room.state === 'chat' || room.state === 'prepare'">
+      <div class="chatbar__input" v-if="room.state === 'prepare' || room.state === 'chat'">
         <v-text-field
+          :disabled="room.state === 'prepare'"
           outlined
           dense
           class="chat_input mx-auto my-auto"
@@ -25,13 +26,13 @@
           @keyup.enter="sendMessage"
         ></v-text-field>
         <v-btn
-          color="success"
-          class="ml-1 my-auto"
+          color="primary"
+          class="ml-1"
           :disabled="room.state !== 'chat' "
           @click="sendMessage"
-        >Submit</v-btn>
-      </v-row>
-      <VotingBar v-if="room.state === 'vote'"></VotingBar>
+        >Send</v-btn>
+      </div>
+      <VotingBar v-else></VotingBar>
     </div>
   </div>
 </template>

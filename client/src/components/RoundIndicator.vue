@@ -1,6 +1,9 @@
 <template>
   <span>
-    <h1> {{ currentRoom }} <span v-if="currentRound >= 0 && currentRoom != 'Lobby'">Round: {{ currentRound }} </span></h1>
+    <h1>
+      {{ currentRoom }}
+      <span v-if="currentRound >= 0 && currentRoom != 'Lobby'">Round: {{ currentRound + 1 }}</span>
+    </h1>
   </span>
 </template>
 

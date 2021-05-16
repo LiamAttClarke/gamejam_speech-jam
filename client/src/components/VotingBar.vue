@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h2 class="mb-2">Time to Vote! Who is the real AI?</h2>
+    <h2
+      class="mb-2"
+    >{{ room.state === 'vote' ? 'Time to Vote! Who is the real AI?' : 'All Is Reveealed!'}}</h2>
 
     <div class="grid-container">
       <v-card
@@ -14,8 +16,12 @@
           <v-avatar size="56">
             <span class="text-h5">{{ room.state === 'vote' ? '🤖' : player.avatar }}</span>
           </v-avatar>
-          <span>{{ player.anonName }}</span>
+          <span>{{ room.state === 'vote' ? player.anonName : player.name}}</span>
         </v-card-title>
+        <v-card-subtitle
+          class="text-center"
+          v-if="room.state === 'reveal'"
+        >Score: {{ player.score }}</v-card-subtitle>
       </v-card>
     </div>
   </div>

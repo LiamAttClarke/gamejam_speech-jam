@@ -55,6 +55,7 @@
                     outlined
                     single-line
                     dense
+                    readonly
                     type="number"
                     style="width: 60px"
                   ></v-text-field>

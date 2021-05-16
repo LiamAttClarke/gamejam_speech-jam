@@ -9,19 +9,20 @@
           </v-avatar>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title>{{player.name}}</v-list-item-title>
-          <v-list-item-subtitle>
-            <!-- Toggle icon if player is host -->
+          <v-list-item-title>
             <v-icon v-if="player.id === room.host" color="accent darken-1">mdi-crown</v-icon>
-          </v-list-item-subtitle>
+            {{player.name}}
+          </v-list-item-title>
         </v-list-item-content>
 
         <!-- Add unique ids for each player -->
         <v-checkbox label="Ready" :value="player.isReady" @change="onReady" color="success"></v-checkbox>
       </v-list-item>
     </v-list>
-    <template v-if="isHost" :disabled="room.players.length < 2" v-slot:append>
-      <v-btn color="accent" @onClick="$store.dispatch('continue')" block>Force Start</v-btn>
+    <template v-if="isHost" disabled v-slot:append>
+      <div class="pa-2">
+        <v-btn color="accent" block @onClick="$store.dispatch('continue')">Force Start</v-btn>
+      </div>
     </template>
   </v-navigation-drawer>
 </template>

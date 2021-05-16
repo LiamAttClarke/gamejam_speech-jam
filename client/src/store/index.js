@@ -42,7 +42,6 @@ const store = new Vuex.Store({
       socket.emit('set:vote', anonName);
     },
     setOptions(context, options) {
-      console.log(options);
       socket.emit('set:options', options);
     },
     continue(context) {

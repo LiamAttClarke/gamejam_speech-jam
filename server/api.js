@@ -8,7 +8,7 @@ const ServerMessage = {
 };
 
 const ClientMessage = {
-  SetRoomOptions: 'set:room-options',
+  SetOptions: 'set:options',
   Continue: 'continue',
   Reset: 'reset',
   SetName: 'set:name',
@@ -18,7 +18,7 @@ const ClientMessage = {
 };
 
 const ErrorMessage = {
-  HostOnly: 'This action can only be performed by the room\'s host',
+  HostOnly: "This action can only be performed by the room's host",
   LobbyOnly: 'This action can only be performed in the lobby.',
   ChatOnly: 'This action can only be performed in the Chat phase.',
   VoteOnly: 'This action can only be performed in the Vote phase.',
@@ -26,7 +26,7 @@ const ErrorMessage = {
   PlayerNameTaken: 'A player with this name already exists in this room.',
   EmptyMessage: 'No message provided.',
   SpectatorNotPermitted: 'Spectators are not permitted to perform this action.',
-  NoManualContinue: 'The host may not skip this step.'
+  NoManualContinue: 'The host may not skip this step.',
 };
 
 let room = new Room();
@@ -65,7 +65,7 @@ exports.initSockets = (io) => {
 
     // Host Controls
 
-    socket.on(ClientMessage.SetRoomOptions, (options) => {
+    socket.on(ClientMessage.SetOptions, (options) => {
       if (!room.host && room.host.id === player.id) {
         socket.emit(ServerMessage.Error, ErrorMessage.HostOnly);
         return;
@@ -171,7 +171,7 @@ exports.initSockets = (io) => {
       }
     });
   });
-}
+};
 
 function logPlayer(player, message) {
   console.info(`Player ${player.id}(${player.name}): ${message}`);

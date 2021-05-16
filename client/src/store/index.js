@@ -13,15 +13,15 @@ const store = new Vuex.Store({
       round: 0,
       host: null,
       players: [],
-      rounds: [],
+      rounds: []
     }
   },
   getters: {
-    room: (state) => state.room,
-    roomDebug: (state) => JSON.stringify(state.room, null, 2),
-    self: (state) => state.room.players.find((p) => p.id === socket.id),
-    isHost: (state) => state.room.host === socket.id,
-    currentRound: (state) => state.room.rounds.length ? state.room.rounds[state.room.round] : null,
+    room: state => state.room,
+    roomDebug: state => JSON.stringify(state.room, null, 2),
+    self: state => state.room.players.find(p => p.id === socket.id),
+    isHost: state => state.room.host === socket.id,
+    currentRound: state => (state.room.rounds.length ? state.room.rounds[state.room.round] : null)
   },
   mutations: {
     setRoom(state, room) {
@@ -32,11 +32,18 @@ const store = new Vuex.Store({
     setName(context, name) {
       socket.emit('set:name', name);
     },
+    setReady(context, isReady) {
+      socket.emit('set:ready', isReady);
+    },
     addMessage(context, message) {
       socket.emit('add:message', message);
     },
     vote(context, anonName) {
       socket.emit('set:vote', anonName);
+    },
+    setOptions(context, options) {
+      console.log(options);
+      socket.emit('set:options', options);
     },
     continue(context) {
       socket.emit('continue');
@@ -55,7 +62,7 @@ socket.on('disconnect', reason => {
   console.log(`Disconnected. Reason: ${reason}`);
 });
 
-socket.on('error', (error) => {
+socket.on('error', error => {
   console.error(error);
   alert(error);
 });

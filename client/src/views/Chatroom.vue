@@ -13,21 +13,21 @@
       </ul>
     </div>
     <div class="chatbar">
-      <v-row>
+      <div class="chatbar__input">
         <v-text-field
           v-if="room.state === 'chat' || room.state === 'prepare'"
           :disabled="room.state === 'prepare'"
           outlined
           dense
-          class="chat_input align-self-end mx-auto"
+          class="chat_input"
           placeholder="Type Here..."
           hide-details="true"
           :value="message"
           v-model="message"
           @keyup.enter="sendMessage"
         ></v-text-field>
-        <v-btn class="ml-1" :disabled="room.state !== 'chat' " @click="sendMessage">Send</v-btn>
-      </v-row>
+        <v-btn color="primary" class="ml-1" :disabled="room.state !== 'chat' " @click="sendMessage">Send</v-btn>
+      </div>
       <VotingBar v-if="room.state === 'vote'"></VotingBar>
     </div>
   </div>
@@ -58,6 +58,19 @@
   flex-shrink: 0;
   padding: 16px;
   border-top: solid 1px #ccc;
+}
+
+.chatbar__input {
+  display: flex;
+  align-items: center;
+}
+
+.chatbar__input > * {
+  margin-right: 8px;
+}
+
+.chatbar__input:last-child {
+  margin-right: 0;
 }
 </style>
 

@@ -4,22 +4,18 @@
 
     <v-btn-toggle v-model="selected" class="grid-container">
       <!-- Change Card Colour based on player -->
-      <v-card
-        class="pa-2"
-        v-for="(player, index) in room.rounds[room.round].playerNames"
-        :key="index"
-      >
+      <v-card class="pa-2" v-for="player in room.activePlayers" :key="player.id">
         <div class="d-flex justify-space-between align-center">
           <!-- Put Avatars Here -->
           <v-avatar size="56">
             <span class="text-h5">{{ player.avatar }}</span>
           </v-avatar>
-          {{player}}
+          <span>{{ player.anonName }}</span>
           <v-card-action>
             <v-btn
               v-if="selected !== player"
               color="success"
-              @click="$store.dispatch('vote', player)"
+              @click="() => $store.dispatch('vote', player.id)"
             >Vote!</v-btn>
           </v-card-action>
         </div>
@@ -38,7 +34,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["room", "isHost"]),
+    ...mapGetters(["room"]),
   },
 };
 </script>

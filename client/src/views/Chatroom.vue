@@ -7,7 +7,7 @@
       </v-card>
       <ul class="messages__list">
         <li v-for="(message, index) in currentRound.messages" :key="index">
-          <b>{{ message.playerName }}</b>
+          <b>{{ message.player.anonName }}</b>
           <p>{{ message.message }}</p>
         </li>
       </ul>
@@ -28,7 +28,6 @@
         ></v-text-field>
         <v-btn class="ml-1" :disabled="room.state !== 'chat' " @click="sendMessage">Submit</v-btn>
       </v-row>
-
       <VotingBar v-if="room.state === 'vote'"></VotingBar>
     </div>
   </div>

@@ -154,24 +154,20 @@ exports.initSockets = (io) => {
         socket.emit(ServerMessage.Error, ErrorMessage.EmptyMessage);
         return;
       }
-      room.addMessage(player.id, message);
+      room.addMessage(player, message);
       io.in(room.id).emit(ServerMessage.StateUpdate, room.serializeForClient());
       logPlayer(player, `AddMessage: ${message}`);
     });
 
-    socket.on(ClientMessage.SetVote, (anonName) => {
+    socket.on(ClientMessage.SetVote, (vottedPlayerId) => {
       if (room.state !== RoomState.Vote) {
         socket.emit(ServerMessage.Error, ErrorMessage.VoteOnly);
         return;
       }
-      if (typeof anonName !== 'string' || !anonName) {
-        socket.emit(ServerMessage.Error, ErrorMessage.InvalidPlayerName);
-        return;
-      }
       try {
-        room.currentRound.setVote(player.id, anonName);
+        room.setVote(player.id, vottedPlayerId);
         io.in(room.id).emit(ServerMessage.StateUpdate, room.serializeForClient());
-        logPlayer(player, `Vote: ${anonName}`);
+        logPlayer(player, `Vote: ${vottedPlayerId}`);
       } catch (e) {
         socket.emit(ServerMessage.Error, e.message);
       }

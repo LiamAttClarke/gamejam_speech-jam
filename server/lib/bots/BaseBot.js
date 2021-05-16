@@ -33,6 +33,10 @@ class BaseBot extends EventEmitter {
   appendContext(newContext) {
     this._context += `\n${newContext}`;
   }
+
+  clearContext() {
+    this._context = '';
+  }
 }
 
 module.exports = {

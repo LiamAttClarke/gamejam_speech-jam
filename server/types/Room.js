@@ -5,10 +5,10 @@ const GPT2Bot = require('../lib/bots/GPT2Bot');
 const Player = require('./Player');
 const Round = require('./Round');
 const { BotEvent } = require('../lib/bots/BaseBot');
-const WikipediaProvider = require('../lib/topic-providers/WikipediaProvider');
 const { BOT_NAME,BOT_AVATAR } = require('../constants');
 const { PreconditionNotSatisfied } = require('../errors');
 const { Timer, TimerEvent } = require('../lib/Timer');
+const Topics = require('../topics');
 
 const RoomState = {
   Lobby: 'lobby',
@@ -50,13 +50,10 @@ class Room extends EventEmitter {
     this._bot = new GPT2Bot();
     this._botPlayer = new Player(uuid.v4(), { name: BOT_NAME, avatar: BOT_AVATAR });
     this._bot.on(BotEvent.Message, (message) => {
-      this.addMessage(this._botPlayer.id, message);
+      this.addMessage(this._botPlayer, message);
       this.emit(RoomEvent.StateChange);
     });
     this._bot.on(BotEvent.Error, (e) => this.emit(RoomEvent.Error, e));
-    this._topicProviders = [
-      new WikipediaProvider,
-    ];
   }
 
   get state() {
@@ -98,6 +95,7 @@ class Room extends EventEmitter {
       round: this.round,
       host: this.host ? this.host.id : null,
       players: this.players,
+      botPlayer: this._botPlayer,
       rounds: this.rounds.map((r) => r.serializeForClient()),
       options: this._options,
     };
@@ -121,7 +119,7 @@ class Room extends EventEmitter {
   async nextState() {
     if (this.state === RoomState.Lobby) {
       if (this._players.size < 2) throw new PreconditionNotSatisfied('At least 2 players required.');
-      const round = await this.initNewRound();
+      const round = this.initNewRound();
       this._rounds.push(round);
       this._state = RoomState.Prepare;
       this._timer.start(this._options.prepareTime * 1000);
@@ -141,7 +139,7 @@ class Room extends EventEmitter {
       this.emit(RoomEvent.StateChange);
     } else if (this.state === RoomState.Reveal) {
       if (this.round < this._options.rounds - 1) {
-        const round = await this.initNewRound();
+        const round = this.initNewRound();
         this._rounds.push(round);
         this.round++;
         this._state = RoomState.Prepare;
@@ -155,29 +153,35 @@ class Room extends EventEmitter {
     }
   }
 
-  async initNewRound() {
+  initNewRound() {
+    this._bot.clearContext();
     const round = new Round();
-    round.topic = await this.generateTopic();
+    round.topic = this.getTopic();
     this._bot.appendContext(round.topic);
-    round.addPlayer(this._botPlayer.id, generateName(round.playerNames));
-    this._players.forEach((p) => {
+    const assignedAnonNames = [];
+    const botAnonName = generateName();
+    assignedAnonNames.push(botAnonName);
+    this._botPlayer.anonName = botAnonName;
+    this.activePlayers.forEach((p) => {
       if (!p.isSpectator) {
-        round.addPlayer(p.id, generateName(round.playerNames));
+        const anonName = generateName(assignedAnonNames);
+        assignedAnonNames.push(anonName);
+        p.anonName = anonName;
+        p.vote = null;
       }
     });
     return round;
   }
 
-  async generateTopic() {
-    const provider = this._topicProviders[Math.floor(this._topicProviders.length * Math.random())];
-    return provider.provide();
+  getTopic() {
+    return Topics[Math.floor(Math.random() * Topics.length)];
   }
 
   reset() {
+    this._timer.stop();
     this._state = RoomState.Lobby;
     this._round = 0;
     this._rounds = [];
-    this._stateTimeout = null;
     this._bot.stop();
     this.players.forEach((p) => p.reset());
   }
@@ -218,6 +222,20 @@ class Room extends EventEmitter {
     }
   }
 
+  addMessage(playerId, message) {
+    this.currentRound.addMessage(playerId, message);
+    this._bot.appendContext(message);
+  }
+
+  setVote(playerId, vottedPlayerId) {
+    const player = this._players.get(playerId);
+    if (player) {
+      player.vote = vottedPlayerId;
+    } else {
+      throw new Error(`Player '${playerId}' not found.`);
+    }
+  }
+
   addPoints(playerId, points) {
     const player = this._players.get(playerId);
     if (player) {
@@ -227,10 +245,7 @@ class Room extends EventEmitter {
     }
   }
 
-  addMessage(playerId, message) {
-    this.currentRound.addMessage(playerId, message);
-    this._bot.appendContext(message);
-  }
+
 }
 
 module.exports = {

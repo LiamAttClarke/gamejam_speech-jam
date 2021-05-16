@@ -1,6 +1,6 @@
 module.exports = class Message {
-  constructor(playerName, message) {
-    this.playerName = playerName;
+  constructor(player, message) {
+    this.player = player;
     this.message = message;
   }
 }

@@ -39,7 +39,7 @@ module.exports = class GPT2Bot extends BaseBot {
     console.log(`GENERATED: <<<${generatedText}>>>`);
 
     // Remove Prefix
-    generatedText = generatedText.slice(this._context.length).trim();
+    generatedText = generatedText.slice(prefix.length).trim();
     // Remove new lines
     generatedText = generatedText.replace(/[\r\n\x0B\x0C\u0085\u2028\u2029]+/g,' ')
     // Remove <|endoftext|>

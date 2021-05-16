@@ -1,5 +1,5 @@
 <template>
-  <span class="timer">
+  <span>
     <h1> {{ currentRoom }} </h1>
   </span>
 </template>

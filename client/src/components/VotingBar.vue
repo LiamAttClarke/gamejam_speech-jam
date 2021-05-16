@@ -2,13 +2,13 @@
   <div>
     <h2 class="mb-2">Time to Vote! Who is the real AI?</h2>
 
-    <v-btn-toggle v-model="selected" class="grid-container">
+    <div class="grid-container">
       <!-- Change Card Colour based on player -->
       <v-card class="pa-2" v-for="player in room.activePlayers" :key="player.id">
         <div class="d-flex justify-space-between align-center">
           <!-- Put Avatars Here -->
           <v-avatar size="56">
-            <span class="text-h5">{{ player.avatar }}</span>
+            <v-img src="http://placekitten.com/200/300"></v-img>
           </v-avatar>
           <span>{{ player.anonName }}</span>
           <v-card-action>
@@ -20,7 +20,7 @@
           </v-card-action>
         </div>
       </v-card>
-    </v-btn-toggle>
+    </div>
   </div>
 </template>
 
@@ -34,7 +34,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["room"]),
+    ...mapGetters(["room", "activePlayers"]),
   },
 };
 </script>

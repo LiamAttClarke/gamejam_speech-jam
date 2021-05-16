@@ -13,20 +13,23 @@
       </ul>
     </div>
     <div class="chatbar">
-      <v-row>
+      <v-row v-if="room.state === 'chat' || room.state === 'prepare'">
         <v-text-field
-          v-if="room.state === 'chat' || room.state === 'prepare'"
-          :disabled="room.state === 'prepare'"
           outlined
           dense
-          class="chat_input align-self-end mx-auto"
+          class="chat_input align-self-end mx-auto my-auto"
           placeholder="Type Here..."
           hide-details="true"
           :value="message"
           v-model="message"
           @keyup.enter="sendMessage"
         ></v-text-field>
-        <v-btn class="ml-1" :disabled="room.state !== 'chat' " @click="sendMessage">Submit</v-btn>
+        <v-btn
+          color="success"
+          class="ml-1 my-auto"
+          :disabled="room.state !== 'chat' "
+          @click="sendMessage"
+        >Submit</v-btn>
       </v-row>
       <VotingBar v-if="room.state === 'vote'"></VotingBar>
     </div>

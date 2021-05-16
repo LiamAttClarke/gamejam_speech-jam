@@ -6,7 +6,7 @@
         <v-form>
           <v-row>
             <v-col>
-              <v-text-field outlined v-model="name" placeholder="Choose a Username" dense></v-text-field>
+              <v-text-field outlined v-model="name" placeholder="Choose a Username" dense @keydown.enter.prevent="onChangeName"></v-text-field>
             </v-col>
             <v-col>
               <v-btn color="success" @click.prevent="onChangeName">Save</v-btn>

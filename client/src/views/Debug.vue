@@ -16,7 +16,7 @@
         <v-btn
           v-for="anonName in currentRound.playerNames"
           :key="anonName"
-          @click="() => $store.dispatch('voteImposter', anonName)">{{ anonName }}</v-btn>
+          @click="() => $store.dispatch('vote', anonName)">{{ anonName }}</v-btn>
       </div>
 
       <hr>

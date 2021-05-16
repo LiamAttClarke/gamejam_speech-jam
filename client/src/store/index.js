@@ -38,7 +38,7 @@ const store = new Vuex.Store({
     addMessage(context, message) {
       socket.emit('add:message', message);
     },
-    voteImposter(context, anonName) {
+    vote(context, anonName) {
       socket.emit('set:vote', anonName);
     },
     setOptions(context, options) {

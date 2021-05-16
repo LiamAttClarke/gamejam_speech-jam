@@ -1,5 +1,6 @@
 const { v4: uuid } = require('uuid');
-const EventEmitter = require('../EventEmitter');
+const EventEmitter = require('../lib/EventEmitter');
+const generateName = require('../lib/NameProvider');
 const Player = require('./Player');
 const Round = require('./Round');
 
@@ -15,6 +16,13 @@ const RoomEvent = {
   StateChange: 'state-change',
 }
 
+const defaultOptions = {
+  rounds: 3,
+  prepareTime: 3,
+  chatTime: 10,
+  votingTime: 10,
+};
+
 class Room extends EventEmitter {
   constructor() {
     super();
@@ -26,12 +34,7 @@ class Room extends EventEmitter {
     // Player.id -> Player
     this._players = new Map();
     this._rounds = [];
-    this._options = {
-      rounds: 3,
-      prepareTime: 3,
-      chatTime: 10,
-      votingTime: 10,
-    };
+    this._options = { ...defaultOptions };
     this._stateTimeout = null;
   }
 
@@ -111,14 +114,10 @@ class Room extends EventEmitter {
     round.seed = this.generateChatSeed();
     this._players.forEach((p) => {
       if (!p.isSpectator) {
-        round.addPlayer(p.id, this.generateAnonPlayerName());
+        round.addPlayer(p.id, generateName(round.playerNames));
       }
     });
     return round;
-  }
-
-  generateAnonPlayerName() {
-    return `anon_${Math.random()}`;
   }
 
   generateChatSeed() {
@@ -164,10 +163,6 @@ class Room extends EventEmitter {
     } else {
       throw new Error(`Player '${playerId}' not found.`);
     }
-  }
-
-  setImposterVote(playerId, anonPlayerName) {
-    this.currentRound.setImposterVote(playerId, anonPlayerName);
   }
 
   addPoints(playerId, points) {

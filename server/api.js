@@ -13,7 +13,7 @@ const ClientMessage = {
   SetName: 'set:name',
   SetReady: 'set:ready',
   AddMessage: 'add:message',
-  VoteImposter: 'set:vote',
+  SetVote: 'set:vote',
 };
 
 const ErrorMessage = {
@@ -143,7 +143,7 @@ exports.initSockets = (io) => {
       logPlayer(player, `AddMessage: ${message}`);
     });
 
-    socket.on(ClientMessage.VoteImposter, (anonName) => {
+    socket.on(ClientMessage.SetVote, (anonName) => {
       if (room.state !== RoomState.Vote) {
         socket.emit(ServerMessage.Error, ErrorMessage.VoteOnly);
         return;
@@ -153,9 +153,9 @@ exports.initSockets = (io) => {
         return;
       }
       try {
-        room.setImposterVote(player.id, anonName);
+        room.currentRound.setVote(player.id, anonName);
         io.in(room.id).emit(ServerMessage.StateUpdate, room.serializeForClient());
-        logPlayer(player, `VoteImposter: ${anonName}`);
+        logPlayer(player, `Vote: ${anonName}`);
       } catch (e) {
         socket.emit(ServerMessage.Error, e.message);
       }

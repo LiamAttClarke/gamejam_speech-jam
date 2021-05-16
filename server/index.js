@@ -26,7 +26,7 @@ httpServer.listen(PORT, () => {
   console.info(`
   SpeechJam
 
-  Compete with friends to blend in with the AI in a chatroom. Vote on the imposter, get points each round for guessing correctly and for tricking your opponents.
+  Compete with friends to blend in with the AI in a chatroom. Vote on the real AI, get points each round for guessing correctly and for tricking your opponents.
 
   Visit ${CLIENT_ADDRESS} to get started.
   `);

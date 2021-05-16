@@ -1,5 +1,6 @@
 const { Room, RoomState, RoomEvent } = require('./types/Room');
 const Player = require('./types/Player');
+const { DEFAULT_PLAYER_NAME } = require('./constants');
 
 const ServerMessage = {
   Error: 'error',
@@ -28,7 +29,13 @@ const ErrorMessage = {
   NoManualContinue: 'The host may not skip this step.',
 };
 
-const room = new Room();
+let room = new Room();
+let anonNameCounter = 0;
+
+function resetRoom() {
+  room = new Room();
+  anonNameCounter = 0;
+}
 
 exports.initSockets = (io) => {
   room.on(RoomEvent.StateChange, () => {
@@ -37,7 +44,9 @@ exports.initSockets = (io) => {
   });
 
   io.on('connect', (socket) => {
+    anonNameCounter++;
     const player = new Player(socket.id, {
+      name: `${DEFAULT_PLAYER_NAME}${anonNameCounter}`,
       isSpectator: room.state !== RoomState.Lobby,
     });
     room.addPlayer(player);
@@ -49,6 +58,7 @@ exports.initSockets = (io) => {
 
     socket.on('disconnect', (reason) => {
       room.removePlayer(player.id);
+      if (!room.players.length) resetRoom();
       socket.to(room.id).emit(ServerMessage.StateUpdate, room.serializeForClient());
       logPlayer(player, `Disconnected. Reason: ${reason}`);
     });

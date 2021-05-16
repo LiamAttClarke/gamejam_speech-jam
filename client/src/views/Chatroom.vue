@@ -1,10 +1,10 @@
 <template>
   <div class="chatroom">
     <div class="messages">
-      <div class="topic" v-if="currentRound">
+      <v-card class="topic py-2 px-4 mb-2" v-if="currentRound">
         <h2>Topic</h2>
         <p>{{ currentRound.topic }}</p>
-      </div>
+      </v-card>
       <ul class="messages__list">
         <li v-for="(message, index) in currentRound.messages" :key="index">
           <b>{{ message.playerName }}</b>
@@ -69,18 +69,29 @@ import { mapGetters } from "vuex";
 export default {
   name: "ChatRoom",
   data: () => ({
-    sticky: true,
     message: "",
   }),
   computed: {
     ...mapGetters(["room", 'currentRound']),
   },
   methods: {
+    scrollToEnd() {
+      var container = this.$el.querySelector(".messages");
+      container.scrollTop = container.scrollHeight + container.lastElementChild.offsetTop;
+    },
     sendMessage() {
       this.$store.dispatch("addMessage", this.message);
       this.message = "";
     },
   },
+  watch: {
+    currentRound: {
+        handler: function() {
+          //need to give some time or else we are always off by 1 element
+          setTimeout(() => this.scrollToEnd(), 100);
+        }
+    }
+  }
 };
 </script>
 

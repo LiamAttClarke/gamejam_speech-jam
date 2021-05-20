@@ -6,7 +6,6 @@
 
     <div class="grid-container">
       <v-card
-        1337
         class="pa-2"
         v-for="player in randomizedPlayers"
         :disabled="room.state !== 'vote'"

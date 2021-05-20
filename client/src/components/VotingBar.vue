@@ -7,7 +7,7 @@
     <div class="grid-container">
       <v-card
         class="pa-2"
-        v-for="player in room.chatPlayers"
+        v-for="player in randomizedPlayers"
         :disabled="room.state !== 'vote'"
         @click="() => $store.dispatch('vote', player.id)"
         :key="player.id"
@@ -31,10 +31,16 @@ export default {
   data: () => {
     return {
       selected: "",
+      random: Math.random(),
     };
   },
   computed: {
     ...mapGetters(["room", "activePlayers"]),
+    computed: {
+      randomizedPlayers() {
+        return this.activePlayers.sort(() => this.random - 0.5);
+      }
+    }
   },
 };
 </script>

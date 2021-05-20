@@ -11,7 +11,7 @@
       <Timer></Timer>
     </v-app-bar>
     <PlayerList />
-    <v-main style="height: calc(100vh - 64px);">
+    <v-main class="main">
       <router-view />
     </v-main>
   </v-app>
@@ -45,3 +45,8 @@ export default {
 };
 </script>
 
+<style scoped>
+.main {
+  height: calc(100vh - 64px);
+}
+</style>

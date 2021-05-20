@@ -27,7 +27,7 @@ module.exports = class GPT2Bot extends BaseBot {
   }
 
   async generateMessage() {
-    console.log('GENERATING');
+    console.log('BOT: Generating...');
     // Server truncates to last 500 chars.
     const prefix = this._context.slice(-500);
     const { data } = await axios.post(GPT2_URL, {
@@ -36,7 +36,6 @@ module.exports = class GPT2Bot extends BaseBot {
       temperature: 1, // recommended range: 0.7 - 1.0
     });
     let generatedText = data.text;
-    console.log(`GENERATED: <<<${generatedText}>>>`);
 
     // Remove Prefix
     generatedText = generatedText.slice(prefix.length).trim();
@@ -45,7 +44,7 @@ module.exports = class GPT2Bot extends BaseBot {
     // Remove <|endoftext|>
     generatedText = generatedText.replace('<|endoftext|>',' ');
 
-    console.log(`OUTPUT: <<<${generatedText}>>>`);
+    console.log(`BOT: Generated: <<<${generatedText}>>>`);
 
     if (this.state === BotState.Chatting) {
       if (generatedText) {

@@ -18,6 +18,7 @@ const RoomState = {
   Chat: 'chat',
   Vote: 'vote',
   Reveal: 'reveal',
+  End: 'end'
 };
 
 const RoomEvent = {
@@ -36,6 +37,7 @@ const DEFAULT_ROOM_OPTIONS = {
   chatTime: 1,
   voteTime: 10,
 };
+
 class Room extends EventEmitter {
   constructor() {
     super();
@@ -103,7 +105,7 @@ class Room extends EventEmitter {
       timerRemaining: this._timer.remainingMS / 1000,
       round: this.round,
       host: this.host ? this.host.id : null,
-      players: this.players,
+      players: this.players.map((r) => r.serializeForClient()),
       botPlayer: this._botPlayer,
       rounds: this.rounds.map((r) => r.serializeForClient()),
       options: this._options,
@@ -147,7 +149,7 @@ class Room extends EventEmitter {
       this._timer.start(this._options.voteTime * 1000);
     } else if (this.state === RoomState.Vote) {
       this._state = RoomState.Reveal;
-      this._awardRoundPoints(this._round);
+      this._awardRoundPoints();
       this.emit(RoomEvent.StateChange);
     } else if (this.state === RoomState.Reveal) {
       if (this.round < this._options.rounds - 1) {
@@ -158,10 +160,12 @@ class Room extends EventEmitter {
         this._timer.start(this._options.prepareTime * 1000);
         this.emit(RoomEvent.StateChange);
       } else {
-        this._state = RoomState.Lobby;
-        this.reset();
+        this._state = RoomState.End;
         this.emit(RoomEvent.StateChange);
       }
+    } else if (this.state === RoomState.End) {
+      this._state = RoomState.Lobby;
+      this.emit(RoomEvent.StateChange);
     }
   }
 
@@ -265,21 +269,26 @@ class Room extends EventEmitter {
     }
   }
 
-  _awardRoundPoints(round) {
+  _awardRoundPoints() {
     if (this._rounds.length) {
       const playerPoints = new Map();
       this._players.forEach((p) => playerPoints.set(p.id, 0));
       this._players.forEach((p) => {
+        if (p.type !== PlayerType.Player) return;
         if (p.vote === this._botPlayer.id) {
           playerPoints.set(p.id, playerPoints.get(p.id) + POINTS_CORRECT_GUESS);
         } else if (this._players.has(p.vote)) {
+<<<<<<< HEAD
           playerPoints.set(playerPoints.get(p.vote) + POINTS_TRICKING_PLAYER);
+=======
+          playerPoints.set(p.vote, playerPoints.get(p.vote) + POINTS_TRICKING_PLAYER)
+>>>>>>> 6db4ab8793f1d6a60fcb2e5399692c22048ea3c9
         }
       });
       for (const [pid, score] of playerPoints.entries()) {
         const player = this._players.get(pid);
         if (player) {
-          player.setRoundPoints(round, score);
+          player.setRoundPoints(score);
         }
       }
     } else {

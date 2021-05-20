@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h2
-      class="mb-2"
-    >{{ room.state === 'vote' ? 'Time to Vote! Who is the real AI?' : 'All Is Revealed!'}}</h2>
+    <h3
+      class="mb-4"
+    >{{ room.state === 'vote' ? 'Time to Vote! Who is the real AI?' : 'All Is Revealed!'}}</h3>
 
     <div class="grid-container">
       <v-card
@@ -11,8 +11,10 @@
         :disabled="room.state !== 'vote'"
         @click="() => $store.dispatch('vote', player.id)"
         :key="player.id"
+        :class=" { 'voted' : self.vote == player.id}"
       >
-        <v-card-title class="d-flex pa-0">
+        <v-card-title class="d-flex pa-0"
+        >
           <v-avatar size="56">
             <span class="text-h5">{{ room.state === 'vote' ? '🤖' : player.avatar }}</span>
           </v-avatar>
@@ -25,6 +27,14 @@
     </div>
   </div>
 </template>
+<style scoped>
+.voted {
+  border-style: solid;
+  border-width: thick;
+  background-color: #C8E6C9 !important;
+  border-color: green !important;
+}
+</style>
 
 <script>
 import { mapGetters } from "vuex";
@@ -37,7 +47,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["room", "activePlayers"]),
+    ...mapGetters(["room", "activePlayers","self"]),
     randomizedPlayers() {
       return [...this.activePlayers].sort(() => this.random - 0.5);
     },

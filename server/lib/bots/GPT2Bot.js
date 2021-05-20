@@ -1,6 +1,7 @@
 const axios = require('axios');
 const { GPT2_URL } = require('../../constants');
 const { BaseBot, BotState, BotEvent } = require('./BaseBot');
+const unidecode  = require('unidecode-plus');
 
 module.exports = class GPT2Bot extends BaseBot {
 
@@ -43,6 +44,9 @@ module.exports = class GPT2Bot extends BaseBot {
     generatedText = generatedText.replace(/[\r\n\x0B\x0C\u0085\u2028\u2029]+/g,' ')
     // Remove <|endoftext|>
     generatedText = generatedText.replace('<|endoftext|>',' ');
+    //Strip non ascii
+    generatedText = unidecode(generatedText, { smartSpacing: true, german: true })
+
 
     console.log(`BOT: Generated: <<<${generatedText}>>>`);
 

@@ -1225,6 +1225,11 @@ undefsafe@^2.0.3:
   dependencies:
     debug "^2.2.0"
 
+unidecode-plus@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/unidecode-plus/-/unidecode-plus-1.0.2.tgz#0ee92c887d02f7893b58e755ec61211860780cf2"
+  integrity sha512-QUdPui0vJ904PPhOkrWYPKYqMLIw++EMrpHLw5TWbdMzDOJSgjV7dN3+gRZjLljDT/KI8U32VgEL12r5bOP2Xg==
+
 unique-names-generator@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/unique-names-generator/-/unique-names-generator-4.5.0.tgz#0da9bb5fe2bd4b86cd52c852cb4669e31fdf7e81"

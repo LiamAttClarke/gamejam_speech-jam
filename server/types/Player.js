@@ -14,14 +14,29 @@ class Player {
     this.avatar = options.avatar || avatarGenerator();
     this.name = options.name || DEFAULT_PLAYER_NAME;
     this.anonName = options.anonName || DEFAULT_PLAYER_NAME,
-    this.score = options.score || 0;
     this.isReady = options.isReady || false;
     this.vote = null;
+    this._score = options.score || 0;
+    this._scoreHistory = [];
+  }
+
+  get score() {
+    return this._score;
+  }
+
+  get scoreHistory() {
+    return this._scoreHistory;
   }
 
   reset() {
-    this.score = 0;
-    this.isReady = false;
+    this._score = 0;
+    this._scoreHistory = [];
+    this.isReady = this.type === PlayerType.Bot ? true : false;
+  }
+
+  setRoundPoints(round, points) {
+    this._scoreHistory[round] = points;
+    this._score += points;
   }
 }
 

@@ -5,7 +5,7 @@ const GPT2Bot = require('../lib/bots/GPT2Bot');
 const { Player, PlayerType } = require('./Player');
 const Round = require('./Round');
 const { BotEvent } = require('../lib/bots/BaseBot');
-const { BOT_AVATAR } = require('../constants');
+const { BOT_AVATAR, POINTS_CORRECT_GUESS, POINTS_TRICKING_PLAYER } = require('../constants');
 const { PreconditionNotSatisfied } = require('../errors');
 const { Timer, TimerEvent } = require('../lib/Timer');
 const { getRandomElement } = require('../lib/utils');
@@ -118,7 +118,7 @@ class Room extends EventEmitter {
     };
   }
 
-  async nextState() {
+  nextState() {
     if (this.state === RoomState.Lobby) {
       if (this._players.size < 2) throw new PreconditionNotSatisfied('At least 2 players required.');
       const round = this.initNewRound();
@@ -138,6 +138,7 @@ class Room extends EventEmitter {
       this._timer.start(this._options.voteTime * 1000);
     } else if (this.state === RoomState.Vote) {
       this._state = RoomState.Reveal;
+      this._awardRoundPoints(this._round);
       this.emit(RoomEvent.StateChange);
     } else if (this.state === RoomState.Reveal) {
       if (this.round < this._options.rounds - 1) {
@@ -247,12 +248,33 @@ class Room extends EventEmitter {
   addPoints(playerId, points) {
     const player = this._players.get(playerId);
     if (player) {
-      player.score += points;
+      player.addPoints(points);
     } else {
       throw new Error(`Player '${playerId}' not found.`);
     }
   }
 
+  _awardRoundPoints(round) {
+    if (this._rounds.length) {
+      const playerPoints = new Map();
+      this._players.forEach((p) => playerPoints.set(p.id, 0));
+      this._players.forEach((p) => {
+        if (p.vote === this._botPlayer.id) {
+          playerPoints.set(p.id, playerPoints.get(p.id) + POINTS_CORRECT_GUESS);
+        } else if (this._players.has(p.vote)) {
+          playerPoints.set(playerPoints.get(p.vote) + POINTS_TRICKING_PLAYER)
+        }
+      });
+      for (const [pid, score] of playerPoints.entries()) {
+        const player = this._players.get(pid);
+        if (player) {
+          player.setRoundPoints(round, score);
+        }
+      }
+    } else {
+      throw new Error('No rounds started.');
+    }
+  }
 
 }
 

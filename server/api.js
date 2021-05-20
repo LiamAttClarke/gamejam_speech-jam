@@ -91,7 +91,7 @@ exports.initSockets = (io) => {
         return;
       }
       try {
-        await room.nextState();
+        room.nextState();
       } catch (e) {
         if (e instanceof PreconditionNotSatisfied) {
           socket.emit(ServerMessage.Error, e.message);

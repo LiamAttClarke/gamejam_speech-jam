@@ -2,10 +2,11 @@
   <div>
     <h2
       class="mb-2"
-    >{{ room.state === 'vote' ? 'Time to Vote! Who is the real AI?' : 'All Is Reveealed!'}}</h2>
+    >{{ room.state === 'vote' ? 'Time to Vote! Who is the real AI?' : 'All Is Revealed!'}}</h2>
 
     <div class="grid-container">
       <v-card
+        1337
         class="pa-2"
         v-for="player in randomizedPlayers"
         :disabled="room.state !== 'vote'"

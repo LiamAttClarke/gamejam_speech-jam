@@ -86,7 +86,7 @@ exports.initSockets = (io) => {
         socket.emit(ServerMessage.Error, ErrorMessage.HostOnly);
         return;
       }
-      if (![RoomState.Lobby, RoomState.Reveal].includes(room.state)) {
+      if (![RoomState.Lobby, RoomState.Reveal, RoomState.End].includes(room.state)) {
         socket.emit(ServerMessage.Error, ErrorMessage.NoManualContinue);
         return;
       }

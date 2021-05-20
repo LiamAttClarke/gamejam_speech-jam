@@ -124,8 +124,7 @@ class Room extends EventEmitter {
 
   nextState() {
     if (this.state === RoomState.Lobby) {
-      if (this._players.size < 2)
-        throw new PreconditionNotSatisfied('At least 2 players required.');
+      if (this._players.size < 2) throw new PreconditionNotSatisfied('At least 2 players required.');
       const round = this.initNewRound();
       this._rounds.push(round);
       this._state = RoomState.Prepare;

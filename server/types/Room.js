@@ -18,7 +18,7 @@ const RoomState = {
   Chat: 'chat',
   Vote: 'vote',
   Reveal: 'reveal',
-  End: 'end'
+  End: 'end',
 };
 
 const RoomEvent = {
@@ -278,11 +278,7 @@ class Room extends EventEmitter {
         if (p.vote === this._botPlayer.id) {
           playerPoints.set(p.id, playerPoints.get(p.id) + POINTS_CORRECT_GUESS);
         } else if (this._players.has(p.vote)) {
-<<<<<<< HEAD
-          playerPoints.set(playerPoints.get(p.vote) + POINTS_TRICKING_PLAYER);
-=======
-          playerPoints.set(p.vote, playerPoints.get(p.vote) + POINTS_TRICKING_PLAYER)
->>>>>>> 6db4ab8793f1d6a60fcb2e5399692c22048ea3c9
+          playerPoints.set(p.vote, playerPoints.get(p.vote) + POINTS_TRICKING_PLAYER);
         }
       });
       for (const [pid, score] of playerPoints.entries()) {

@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer permanent clipped app :width="room.state === 'lobby' ? '500' : '125'">
+  <v-navigation-drawer permanent clipped app :width="room.state === 'lobby' ? '500' : '150'">
     <v-list>
       <v-list-item
         v-for="player in room.players"
@@ -11,12 +11,14 @@
           <span class="text-h5">{{ player.avatar }}</span>
         </v-list-item-icon>
 
-        <v-list-item-content v-if="room.state === 'lobby'">
-          <v-list-item-title>
+        <v-list-item-content>
+          <v-list-item-title v-if="room.state === 'lobby'">
             <v-icon v-if="player.id === room.host" color="accent darken-1">mdi-crown</v-icon>
             {{player.name}}
             <span v-if="self.id === player.id">(You)</span>
-            <span v-if="room.state !== 'lobby'">
+          </v-list-item-title>
+          <v-list-item-title v-else>
+            <span>
               Score:
               <br />
               {{player.score}}

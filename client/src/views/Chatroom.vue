@@ -33,7 +33,7 @@
       </div>
       <VotingBar v-else></VotingBar>
       <EndModal></EndModal>
-      <RevealModal v-if="isHost"></RevealModal>
+      <RevealModal></RevealModal>
     </div>
   </div>
 </template>

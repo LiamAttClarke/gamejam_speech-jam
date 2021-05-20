@@ -11,7 +11,7 @@
         <v-card-text style="height: 300px;">
           List of players
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions v-if="isHost">
           <v-btn
           x-large
           class="primary"
@@ -32,7 +32,7 @@ export default {
     endDialog: false,
   }),
   computed: {
-    ...mapGetters(["room", "currentRound"]),
+    ...mapGetters(["room", "currentRound","isHost"]),
   },
   methods: {
     openEndDialog () {

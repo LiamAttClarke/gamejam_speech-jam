@@ -33,6 +33,8 @@
         >Send</v-btn>
       </div>
       <VotingBar v-else></VotingBar>
+      <EndModal></EndModal>
+      <RevealModal v-if="isHost"></RevealModal>
     </div>
   </div>
 </template>
@@ -79,22 +81,19 @@
 </style>
 
 <script>
-/*
-  <ChatList
-      class="d-flex align-end flex-row mx-auto overflow-hidden" >
-      </ChatList>
-      */
 import { mapGetters } from "vuex";
 import VotingBar from "../components/VotingBar.vue";
+import EndModal from "../components/EndModal.vue";
+import RevealModal from "../components/RevealModal.vue";
 
 export default {
   name: "ChatRoom",
-  components: { VotingBar },
+  components: { VotingBar, EndModal, RevealModal },
   data: () => ({
     message: "",
   }),
   computed: {
-    ...mapGetters(["room", "currentRound"]),
+    ...mapGetters(["room", "currentRound","isHost"]),
   },
   methods: {
     scrollToEnd() {
@@ -107,7 +106,7 @@ export default {
         this.$store.dispatch("addMessage", this.message);
         this.message = "";
       }
-    },
+    }
   },
   watch: {
     currentRound: {

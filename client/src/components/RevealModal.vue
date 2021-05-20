@@ -16,7 +16,7 @@
       </v-btn>
       <v-card v-else
           class="mx-auto info"
-          max-width="344"
+          max-width="600"
         >
           <v-card-title>
             <h1>Waiting on the host to continue</h1>

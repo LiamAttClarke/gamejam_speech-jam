@@ -35,7 +35,7 @@ const DEFAULT_ROOM_OPTIONS = {
   rounds: 1,
   prepareTime: 1,
   chatTime: 1,
-  voteTime: 10,
+  voteTime: 3,
 };
 
 class Room extends EventEmitter {

@@ -6,7 +6,8 @@
 
     <div class="grid-container">
       <v-card
-        class="pa-2"
+        class="pa-2 vote-btn"
+        elevation="5"
         v-for="player in randomizedPlayers"
         :disabled="room.state !== 'vote'"
         @click="() => $store.dispatch('vote', player.id)"
@@ -28,10 +29,18 @@
     </div>
   </div>
 </template>
-<style scoped>
+<style lang="scss" scoped>
+$card-disabled-opacity: 0.9;
+
+.vote-btn {
+  border-style: solid;
+  border-width: 3px;
+  border-color: transparent;
+}
+
 .voted {
   border-style: solid;
-  border-width: thick;
+  border-width: 3px;
   background-color: #c8e6c9 !important;
   border-color: green !important;
 }

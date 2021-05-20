@@ -54,7 +54,7 @@ module.exports = class GPT2Bot extends BaseBot {
       if (generatedText) {
         this.emit(BotEvent.Message, generatedText);
       }
-      const delay = 5000 + Math.random() * 5000;
+      const delay = 5000 + Math.random() * 10000;
       this._timeout = setTimeout(this.generateMessage.bind(this), delay);
     }
   }

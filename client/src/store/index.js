@@ -4,7 +4,7 @@ import { io } from 'socket.io-client';
 
 Vue.use(Vuex);
 
-const socket = io('http://localhost:3000');
+const socket = io();
 const store = new Vuex.Store({
   state: {
     room: {

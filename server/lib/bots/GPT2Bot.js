@@ -15,6 +15,7 @@ module.exports = class GPT2Bot extends BaseBot {
     this.awake();
     this._state = BotState.Chatting;
     try {
+      setTimeout(this.generateMessage.bind(this), 3000 + Math.random() * 7000);
       this.generateMessage();
     } catch (e) {
       console.error(e);

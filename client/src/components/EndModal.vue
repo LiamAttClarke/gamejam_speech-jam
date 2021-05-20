@@ -15,7 +15,7 @@
           <v-btn
           x-large
           class="primary"
-        @click="() => $store.dispatch('continue', self.id)">
+          @click="() => $store.dispatch('continue')">
           Continue to Lobby
         </v-btn>
         </v-card-actions>

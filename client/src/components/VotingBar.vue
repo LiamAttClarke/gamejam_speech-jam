@@ -8,7 +8,7 @@
       <v-card
         1337
         class="pa-2"
-        v-for="player in room.chatPlayers"
+        v-for="player in randomizedPlayers"
         :disabled="room.state !== 'vote'"
         @click="() => $store.dispatch('vote', player.id)"
         :key="player.id"
@@ -29,8 +29,19 @@
 import { mapGetters } from "vuex";
 export default {
   name: "VotingBar",
+  data: () => {
+    return {
+      selected: "",
+      random: Math.random(),
+    };
+  },
   computed: {
     ...mapGetters(["room", "activePlayers"]),
+    computed: {
+      randomizedPlayers() {
+        return this.activePlayers.sort(() => this.random - 0.5);
+      },
+    },
   },
 };
 </script>

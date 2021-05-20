@@ -2,13 +2,15 @@ const uuid = require('uuid');
 const EventEmitter = require('../lib/EventEmitter');
 const generateName = require('../lib/NameProvider');
 const GPT2Bot = require('../lib/bots/GPT2Bot');
-const Player = require('./Player');
+const { Player, PlayerType } = require('./Player');
 const Round = require('./Round');
 const { BotEvent } = require('../lib/bots/BaseBot');
-const { BOT_NAME,BOT_AVATAR } = require('../constants');
+const { BOT_AVATAR } = require('../constants');
 const { PreconditionNotSatisfied } = require('../errors');
 const { Timer, TimerEvent } = require('../lib/Timer');
+const { getRandomElement } = require('../lib/utils');
 const Topics = require('../topics');
+const RobotNames = require('../robot-names');
 
 const RoomState = {
   Lobby: 'lobby',
@@ -48,13 +50,18 @@ class Room extends EventEmitter {
       this.nextState();
     });
     this._bot = new GPT2Bot();
-    this._botPlayer = new Player(uuid.v4(), { name: BOT_NAME, avatar: BOT_AVATAR });
+    this._botPlayer = new Player(uuid.v4(), {
+      type: PlayerType.Bot,
+      name: this.getBotName(),
+      avatar: BOT_AVATAR,
+      isReady: true,
+    });
+    this.addPlayer(this._botPlayer);
     this._bot.on(BotEvent.Message, (message) => {
       this.addMessage(this._botPlayer, message);
       this.emit(RoomEvent.StateChange);
     });
     this._bot.on(BotEvent.Error, (e) => this.emit(RoomEvent.Error, e));
-    this._currentRoundSeed = Math.random();
   }
 
   get state() {
@@ -65,20 +72,8 @@ class Room extends EventEmitter {
     return Array.from(this._players.values());
   }
 
-  get activePlayers() {
-    const activePlayers = [];
-    this._players.forEach((player) => {
-      if (!player.isSpectator) {
-        activePlayers.push(player);
-      }
-    });
-    return activePlayers;
-  }
-
-  get chatPlayers() {
-    const players = this.activePlayers;
-    players.push(this._botPlayer);
-    return players.sort((a, b) => this._currentRoundSeed - 0.5)
+  get activePlayerCount() {
+    return this.players.filter((p) => p.type === PlayerType.Player).length;
   }
 
   get rounds() {
@@ -102,7 +97,6 @@ class Room extends EventEmitter {
       round: this.round,
       host: this.host ? this.host.id : null,
       players: this.players,
-      chatPlayers: this.chatPlayers,
       botPlayer: this._botPlayer,
       rounds: this.rounds.map((r) => r.serializeForClient()),
       options: this._options,
@@ -170,8 +164,8 @@ class Room extends EventEmitter {
     const botAnonName = generateName();
     assignedAnonNames.push(botAnonName);
     this._botPlayer.anonName = botAnonName;
-    this.activePlayers.forEach((p) => {
-      if (!p.isSpectator) {
+    this.players.forEach((p) => {
+      if (!p.type !== PlayerType.Spectator) {
         const anonName = generateName(assignedAnonNames);
         assignedAnonNames.push(anonName);
         p.anonName = anonName;
@@ -182,7 +176,11 @@ class Room extends EventEmitter {
   }
 
   getTopic() {
-    return Topics[Math.floor(Math.random() * Topics.length)];
+    return getRandomElement(Topics);
+  }
+
+  getBotName() {
+    return getRandomElement(RobotNames);
   }
 
   reset() {
@@ -191,8 +189,8 @@ class Room extends EventEmitter {
     this._round = 0;
     this._rounds = [];
     this._bot.stop();
+    this._botPlayer.name = this.getBotName();
     this.players.forEach((p) => p.reset());
-    this._currentRoundSeed = Math.random();
   }
 
   playerWithName(name) {
@@ -201,7 +199,7 @@ class Room extends EventEmitter {
 
   addPlayer(player) {
     if (!(player instanceof Player)) throw new Error(`Room.addPlayer expects an instance of Player. Got: ${player}`);
-    if (!this._players.size) {
+    if (player.type === PlayerType.Player && !this.activePlayerCount) {
       this.host = player;
     }
     this._players.set(player.id, player);
@@ -211,13 +209,14 @@ class Room extends EventEmitter {
     if (typeof playerId !== 'string') throw new Error(`Room.removePlayer expects a string (Player.id). Got: ${playerId}`);
     this._players.delete(playerId);
     if (this.host && this.host.id === playerId) {
-      if (this.activePlayers.length) {
-        this.host = this.activePlayers[0];
+      const nextHost = this.players.find((p) => p.type === PlayerType.Player);
+      if (nextHost) {
+        this.host = nextHost;
       } else {
         this.reset();
       }
     }
-    if (this.state !== RoomState.Lobby && this.activePlayers.length < 2) {
+    if (this.state !== RoomState.Lobby && this.activePlayerCount < 2) {
       this.reset();
     }
   }

@@ -1,4 +1,5 @@
 const GraphemeSplitter = require('grapheme-splitter');
+const { getRandomElement } = require('./utils');
 
 const splitter = new GraphemeSplitter();
 // Robot avatar is reserved for AI
@@ -7,7 +8,7 @@ const avatars = splitter.splitGraphemes(emojis);
 
 module.exports = function(reservedAvatars = []) {
   while (true) {
-    const avatar = avatars[Math.floor(Math.random() * avatars.length)];
+    const avatar = getRandomElement(avatars);
     if (!reservedAvatars.includes(avatar)) {
       return avatar;
     }

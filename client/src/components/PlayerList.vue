@@ -15,7 +15,7 @@
         <v-checkbox
           label="Ready"
           :disabled="self.id !== player.id"
-          :value="player.isReady"
+          :input-value="player.isReady"
           @change="onReady"
           color="success"
         ></v-checkbox>
@@ -25,11 +25,13 @@
       <div class="pa-2">
         <v-btn
           color="primary"
-          :disabled="room.players.length < 2"
+          :disabled="activeHumanPlayers.length < 2"
           v-if="room.state === 'lobby'"
           block
-          @click="() => $store.dispatch('continue')"
-        >Start</v-btn>
+          @click="() => $store.dispatch('continue')">
+        <span v-if="activeHumanPlayers.length < 2">2 humans needed</span>
+        <span v-else>Start</span>
+        </v-btn>
       </div>
     </template>
   </v-navigation-drawer>
@@ -40,7 +42,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "PlayerList",
   computed: {
-    ...mapGetters(["room", "isHost", "self"]),
+    ...mapGetters(["room", "isHost", "self", 'activeHumanPlayers']),
   },
   methods: {
     onReady(isReady) {

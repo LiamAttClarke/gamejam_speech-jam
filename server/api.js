@@ -1,5 +1,5 @@
 const { Room, RoomState, RoomEvent } = require('./types/Room');
-const Player = require('./types/Player');
+const { Player, PlayerType } = require('./types/Player');
 const { DEFAULT_PLAYER_NAME } = require('./constants');
 const { PreconditionNotSatisfied } = require('./errors');
 const generateAvatar = require('./lib/avatar-generator');
@@ -27,7 +27,7 @@ const ErrorMessage = {
   InvalidPlayerName: 'Player name must be at least 1 character long.',
   PlayerNameTaken: 'A player with this name already exists in this room.',
   EmptyMessage: 'No message provided.',
-  SpectatorNotPermitted: 'Spectators are not permitted to perform this action.',
+  PlayerOnly: 'Only players can perform this action.',
   NoManualContinue: 'The host may not skip this step.',
 };
 
@@ -47,9 +47,9 @@ exports.initSockets = (io) => {
   io.on('connect', (socket) => {
     anonNameCounter++;
     const player = new Player(socket.id, {
+      type: room.state === RoomState.Lobby ? PlayerType.Player : Player.PlayerType.Spectator,
       name: `${DEFAULT_PLAYER_NAME}${anonNameCounter}`,
       avatar: generateAvatar(room.players.map((p) => p.avatar)),
-      isSpectator: room.state !== RoomState.Lobby,
     });
     room.addPlayer(player);
     const updatedRoomState = room.serializeForClient();
@@ -60,7 +60,7 @@ exports.initSockets = (io) => {
 
     socket.on('disconnect', (reason) => {
       room.removePlayer(player.id);
-      if (!room.players.length) resetRoom();
+      if (!room.activePlayerCount) resetRoom();
       socket.to(room.id).emit(ServerMessage.StateUpdate, room.serializeForClient());
       logPlayer(player, `Disconnected. Reason: ${reason}`);
     });
@@ -134,8 +134,8 @@ exports.initSockets = (io) => {
         socket.emit(ServerMessage.Error, ErrorMessage.LobbyOnly);
         return;
       }
-      if (player.isSpectator) {
-        socket.emit(ServerMessage.Error, ErrorMessage.SpectatorNotPermitted);
+      if (player.type !== PlayerType.Player) {
+        socket.emit(ServerMessage.Error, ErrorMessage.PlayerOnly);
       }
       room.setPlayerReady(player.id, isReady);
       io.in(room.id).emit(ServerMessage.StateUpdate, room.serializeForClient());
@@ -147,8 +147,8 @@ exports.initSockets = (io) => {
         socket.emit(ServerMessage.Error, ErrorMessage.ChatOnly);
         return;
       }
-      if (player.isSpectator) {
-        socket.emit(ServerMessage.Error, ErrorMessage.SpectatorNotPermitted);
+      if (player.type !== PlayerType.Player) {
+        socket.emit(ServerMessage.Error, ErrorMessage.PlayerOnly);
       }
       if (typeof message !== 'string' || !message) {
         socket.emit(ServerMessage.Error, ErrorMessage.EmptyMessage);

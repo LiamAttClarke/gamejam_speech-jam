@@ -28,14 +28,28 @@ class Player {
     return this._scoreHistory;
   }
 
+  serializeForClient() {
+    return {
+      id: this.id,
+      type: this.type,
+      avatar: this.avatar,
+      name: this.name,
+      anonName: this.anonName,
+      isReady: this.isReady,
+      vote: this.vote,
+      score: this.score,
+      scoreHistory: this.scoreHistory,
+    };
+  }
+
   reset() {
     this._score = 0;
     this._scoreHistory = [];
     this.isReady = this.type === PlayerType.Bot ? true : false;
   }
 
-  setRoundPoints(round, points) {
-    this._scoreHistory[round] = points;
+  setRoundPoints(points) {
+    this._scoreHistory.push(points);
     this._score += points;
   }
 }

@@ -25,6 +25,7 @@
     "grapheme-splitter": "^1.0.4",
     "open": "8.0.2",
     "socket.io": "^4.1.1",
+    "unidecode-plus": "^1.0.2",
     "unique-names-generator": "^4.5.0",
     "uuid": "^8.3.2"
   },

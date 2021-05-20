@@ -25,17 +25,11 @@ const RoomEvent = {
   StateChange: 'state-change',
 };
 
-// const DEFAULT_ROOM_OPTIONS = {
-//   rounds: 1,
-//   prepareTime: 10,
-//   chatTime: 60 * 2,
-//   voteTime: 60 * 3,
-// };
 const DEFAULT_ROOM_OPTIONS = {
   rounds: 1,
-  prepareTime: 1,
-  chatTime: 1,
-  voteTime: 3,
+  prepareTime: 10,
+  chatTime: 60 * 2,
+  voteTime: 60 * 3,
 };
 
 class Room extends EventEmitter {

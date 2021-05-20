@@ -3,9 +3,9 @@
     <v-dialog
       v-model="revealModal"
       scrollable
-      hide-overlay="true"
+      hide-overlay
       max-width="400px"
-      persistent="true"
+      persistent
       class="text-center"
     >
       <v-btn

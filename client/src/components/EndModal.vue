@@ -1,22 +1,37 @@
 <template>
-  <v-dialog
-    :value="room.state === 'end'"
-    scrollable
-    max-width="400px"
-  >
+  <v-dialog v-model="endDialog" scrollable max-width="400px">
     <v-card>
       <v-card-title>Game Over</v-card-title>
       <v-divider></v-divider>
-      <v-card-text style="height: 300px;">
-        List of players
-      </v-card-text>
-      <v-card-actions v-if="isHost">
+      <v-list>
+        <v-list-item
+          v-for="player in room.players"
+          :key="player.id"
+          class="player-info"
+          :class=" { 'grey lighten-3' : self.id == player.id}"
+        >
+          <v-list-item-icon>
+            <span class="text-h5">{{ player.avatar }}</span>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>
+              {{player.name}}
+              <span v-if="self.id === player.id">(You)</span>
+            </v-list-item-title>
+            <v-list-item-title>
+              <span>Score: {{player.score}}</span>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+      <v-card-actions>
         <v-btn
-        x-large
-        class="primary"
-        @click="() => $store.dispatch('continue')">
-        Continue to Lobby
-      </v-btn>
+          x-large
+          block
+          class="primary"
+          @click="() => $store.dispatch('continue')"
+        >Continue to Lobby</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -24,10 +39,11 @@
 
 <script>
 import { mapGetters } from "vuex";
+
 export default {
   name: "EndModal",
   computed: {
-    ...mapGetters(["room", "isHost"]),
+    ...mapGetters(["room", "self", "isHost"]),
   },
 };
 </script>

@@ -2,10 +2,11 @@
   <div>
     <h2
       class="mb-2"
-    >{{ room.state === 'vote' ? 'Time to Vote! Who is the real AI?' : 'All Is Reveealed!'}}</h2>
+    >{{ room.state === 'vote' ? 'Time to Vote! Who is the real AI?' : 'All Is Revealed!'}}</h2>
 
     <div class="grid-container">
       <v-card
+        1337
         class="pa-2"
         v-for="player in room.chatPlayers"
         :disabled="room.state !== 'vote'"
@@ -28,11 +29,6 @@
 import { mapGetters } from "vuex";
 export default {
   name: "VotingBar",
-  data: () => {
-    return {
-      selected: "",
-    };
-  },
   computed: {
     ...mapGetters(["room", "activePlayers"]),
   },

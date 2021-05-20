@@ -82,6 +82,7 @@ export default {
       { text: "3 minutes", value: 60 * 3 },
       { text: "4 minutes", value: 60 * 4 },
       { text: "5 minutes", value: 60 * 5 },
+      { text: "20 minutes", value: 60 * 20 },
     ],
     roundOptions: [
       { text: "1 round", value: 1 },

@@ -13,14 +13,17 @@
         :key="player.id"
         :class=" { 'voted' : self.vote == player.id}"
       >
-        <v-card-title class="d-flex pa-0"
-        >
+        <v-card-title class="d-flex pa-0">
           <v-avatar size="56">
             <span class="text-h5">{{ room.state === 'vote' ? '🤖' : player.avatar }}</span>
           </v-avatar>
-          <span>{{ room.state === 'vote' ? player.anonName : player.name}}</span>
+          <div>
+            {{ player.anonName }}
+            <br />
+            <span v-if="room.state === 'reveal'">AKA {{ player.name }}</span>
+          </div>
         </v-card-title>
-        <v-card-subtitle v-if="room.state === 'reveal'">Score: {{ player.score }}</v-card-subtitle>
+        <v-card-title v-show="room.state === 'reveal'">+{{ addedPoints(player) }} points</v-card-title>
       </v-card>
     </div>
   </div>
@@ -29,7 +32,7 @@
 .voted {
   border-style: solid;
   border-width: thick;
-  background-color: #C8E6C9 !important;
+  background-color: #c8e6c9 !important;
   border-color: green !important;
 }
 </style>
@@ -45,10 +48,15 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["room", "activePlayers","self"]),
+    ...mapGetters(["room", "activePlayers", "self"]),
     randomizedPlayers() {
       return [...this.activePlayers].sort(() => this.random - 0.5);
-    }
+    },
+  },
+  methods: {
+    addedPoints(player) {
+      return player.scoreHistory[player.scoreHistory.length - 1];
+    },
   },
 };
 </script>

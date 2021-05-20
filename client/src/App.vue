@@ -35,6 +35,7 @@ export default {
           case "chat":
           case "vote":
           case "reveal":
+          case "end":
             routeName = 'Chatroom';
             break;
         }

@@ -18,27 +18,25 @@ const RoomState = {
   Chat: 'chat',
   Vote: 'vote',
   Reveal: 'reveal',
-  End: 'end'
+  End: 'end',
 };
 
 const RoomEvent = {
   StateChange: 'state-change',
 };
 
+// const DEFAULT_ROOM_OPTIONS = {
+//   rounds: 1,
+//   prepareTime: 10,
+//   chatTime: 60 * 2,
+//   voteTime: 60 * 3,
+// };
 const DEFAULT_ROOM_OPTIONS = {
   rounds: 1,
-  prepareTime: 10,
-  chatTime: 60 * 2,
-  voteTime: 60 * 3,
+  prepareTime: 1,
+  chatTime: 1,
+  voteTime: 10,
 };
-
-// For testing
-// const DEFAULT_ROOM_OPTIONS = {
-//   rounds: 2,
-//   prepareTime: 2,
-//   chatTime: 5,
-//   voteTime: 10,
-// };
 
 class Room extends EventEmitter {
   constructor() {
@@ -53,11 +51,13 @@ class Room extends EventEmitter {
     this._rounds = [];
     this._options = { ...DEFAULT_ROOM_OPTIONS };
     this._timer = new Timer(1000);
-    this._timer.on(TimerEvent.Tick, () => {
-      this.emit(RoomEvent.StateChange);
-    }).on(TimerEvent.End, () => {
-      this.nextState();
-    });
+    this._timer
+      .on(TimerEvent.Tick, () => {
+        this.emit(RoomEvent.StateChange);
+      })
+      .on(TimerEvent.End, () => {
+        this.nextState();
+      });
     this._bot = new GPT2Bot();
     this._botPlayer = new Player(uuid.v4(), {
       type: PlayerType.Bot,
@@ -93,7 +93,7 @@ class Room extends EventEmitter {
     return this._rounds[this.round];
   }
 
-  get options () {
+  get options() {
     return this._options;
   }
 
@@ -113,7 +113,8 @@ class Room extends EventEmitter {
   }
 
   setOptions(options) {
-    if (this.state !== RoomState.Lobby) throw new Error('Room options can only be set while in the lobby.');
+    if (this.state !== RoomState.Lobby)
+      throw new Error('Room options can only be set while in the lobby.');
     const optionKeys = Object.keys(DEFAULT_ROOM_OPTIONS);
     Object.keys(options).forEach((k) => {
       if (!optionKeys.includes(k)) {
@@ -129,7 +130,8 @@ class Room extends EventEmitter {
 
   nextState() {
     if (this.state === RoomState.Lobby) {
-      if (this._players.size < 2) throw new PreconditionNotSatisfied('At least 2 players required.');
+      if (this._players.size < 2)
+        throw new PreconditionNotSatisfied('At least 2 players required.');
       const round = this.initNewRound();
       this._rounds.push(round);
       this._state = RoomState.Prepare;
@@ -210,7 +212,8 @@ class Room extends EventEmitter {
   }
 
   addPlayer(player) {
-    if (!(player instanceof Player)) throw new Error(`Room.addPlayer expects an instance of Player. Got: ${player}`);
+    if (!(player instanceof Player))
+      throw new Error(`Room.addPlayer expects an instance of Player. Got: ${player}`);
     if (player.type === PlayerType.Player && !this.activePlayerCount) {
       this.host = player;
     }
@@ -218,7 +221,8 @@ class Room extends EventEmitter {
   }
 
   removePlayer(playerId) {
-    if (typeof playerId !== 'string') throw new Error(`Room.removePlayer expects a string (Player.id). Got: ${playerId}`);
+    if (typeof playerId !== 'string')
+      throw new Error(`Room.removePlayer expects a string (Player.id). Got: ${playerId}`);
     this._players.delete(playerId);
     if (this.host && this.host.id === playerId) {
       const nextHost = this.players.find((p) => p.type === PlayerType.Player);
@@ -274,7 +278,7 @@ class Room extends EventEmitter {
         if (p.vote === this._botPlayer.id) {
           playerPoints.set(p.id, playerPoints.get(p.id) + POINTS_CORRECT_GUESS);
         } else if (this._players.has(p.vote)) {
-          playerPoints.set(p.vote, playerPoints.get(p.vote) + POINTS_TRICKING_PLAYER)
+          playerPoints.set(p.vote, playerPoints.get(p.vote) + POINTS_TRICKING_PLAYER);
         }
       });
       for (const [pid, score] of playerPoints.entries()) {
@@ -287,7 +291,6 @@ class Room extends EventEmitter {
       throw new Error('No rounds started.');
     }
   }
-
 }
 
 module.exports = {

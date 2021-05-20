@@ -4,8 +4,10 @@
       <v-app-bar-nav-icon class="no-events">
         <v-img contain max-height="50" max-width="50" src="./assets/goat.svg"></v-img>
       </v-app-bar-nav-icon>
-      <v-toolbar-title class="mr-8">SpeechJam</v-toolbar-title>
+      <v-toolbar-title>SpeechJam</v-toolbar-title>
+      <v-spacer></v-spacer>
       <RoundIndicator />
+      <v-spacer></v-spacer>
     </v-app-bar>
     <PlayerList />
     <v-main class="main">

@@ -23,14 +23,15 @@
     </v-list>
     <template v-if="isHost" v-slot:append>
       <div class="pa-2">
-        <p class="start-requirement" v-show="activeHumanPlayers.length < 2">At least 2 human players needed.</p>
         <v-btn
           color="primary"
           :disabled="activeHumanPlayers.length < 2"
           v-if="room.state === 'lobby'"
           block
-          @click="() => $store.dispatch('continue')"
-        >Start</v-btn>
+          @click="() => $store.dispatch('continue')">
+        <span v-if="activeHumanPlayers.length < 2">2 humans needed</span>
+        <span v-else>Start</span>
+        </v-btn>
       </div>
     </template>
   </v-navigation-drawer>
@@ -53,9 +54,5 @@ export default {
 <style lang="scss" scoped>
 .player-info {
   border-bottom: 1px solid #ccc;
-}
-
-.start-requirement {
-  text-align: center;
 }
 </style>

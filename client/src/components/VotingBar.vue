@@ -37,10 +37,9 @@ export default {
   },
   computed: {
     ...mapGetters(["room", "activePlayers"]),
-    computed: {
-      randomizedPlayers() {
-        return this.activePlayers.sort(() => this.random - 0.5);
-      },
+
+    randomizedPlayers() {
+      return this.activePlayers.sort(() => this.random - 0.5);
     },
   },
 };

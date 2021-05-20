@@ -28,16 +28,20 @@ export default {
   watch: {
     "$store.state.room": function (newRoom, oldRoom) {
       if (newRoom.state !== oldRoom.state) {
+        let routeName = null;
         switch (newRoom.state) {
           case "lobby":
-            this.$router.push({ name: "Lobby" });
+            routeName = 'Lobby';
             break;
           case "prepare":
           case "chat":
           case "vote":
           case "reveal":
-            this.$router.push({ name: "Chatroom" });
+            routeName = 'Chatroom';
             break;
+        }
+        if (routeName && routeName !== this.$route.name) {
+          this.$router.push({ name: routeName });
         }
       }
     },

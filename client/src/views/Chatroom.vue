@@ -32,9 +32,16 @@
         >Send</v-btn>
       </div>
       <VotingBar v-else></VotingBar>
-      <EndModal></EndModal>
-      <RevealModal></RevealModal>
+      <div v-if="isHost && room.state === 'reveal'" class="mt-4 d-flex justify-end">
+        <v-btn
+          x-large
+          class="primary"
+          @click="() => $store.dispatch('continue')">
+          Continue
+        </v-btn>
+      </div>
     </div>
+    <EndModal />
   </div>
 </template>
 
@@ -83,11 +90,10 @@
 import { mapGetters } from "vuex";
 import VotingBar from "../components/VotingBar.vue";
 import EndModal from "../components/EndModal.vue";
-import RevealModal from "../components/RevealModal.vue";
 
 export default {
   name: "ChatRoom",
-  components: { VotingBar, EndModal, RevealModal },
+  components: { VotingBar, EndModal },
   data: () => ({
     message: "",
   }),

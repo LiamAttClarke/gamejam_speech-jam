@@ -15,7 +15,7 @@
         class="primary"
         @click="() => $store.dispatch('continue', self.id)"
       >Continue to Next Round</v-btn>
-      <v-card v-else class="mx-auto info" max-width="344">
+      <v-card v-else class="mx-auto info" max-width="600">
         <v-card-title>
           <h1>Waiting on the host to continue</h1>
         </v-card-title>

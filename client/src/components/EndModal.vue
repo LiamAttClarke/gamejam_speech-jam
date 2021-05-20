@@ -47,7 +47,7 @@ export default {
     endDialog: false,
   }),
   computed: {
-    ...mapGetters(["room", "currentRound", "self"]),
+    ...mapGetters(["room", "currentRound", "self", "isHost"]),
   },
   methods: {
     openEndDialog() {

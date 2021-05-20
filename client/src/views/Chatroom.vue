@@ -33,7 +33,7 @@
       </div>
       <VotingBar v-else></VotingBar>
       <EndModal></EndModal>
-      <RevealModal v-if="isHost"></RevealModal>
+      <RevealModal></RevealModal>
     </div>
   </div>
 </template>
@@ -96,9 +96,10 @@ export default {
   },
   methods: {
     scrollToEnd() {
-      var container = this.$el.querySelector(".messages");
-      container.scrollTop =
-        container.scrollHeight + container.lastElementChild.offsetTop;
+      if (this.room.state === 'chat') {
+        var container = this.$el.querySelector(".messages");
+        container.scrollTop = container.scrollHeight + container.lastElementChild.offsetTop;
+      }
     },
     sendMessage() {
       if (this.room.state === "chat") {
@@ -110,8 +111,8 @@ export default {
   watch: {
     currentRound: {
       handler: function () {
-        //need to give some time or else we are always off by 1 element
-        setTimeout(() => this.scrollToEnd(), 100);
+        // need to give some time or else we are always off by 1 element
+        setTimeout(() => this.scrollToEnd(), 1000);
       },
     },
   },

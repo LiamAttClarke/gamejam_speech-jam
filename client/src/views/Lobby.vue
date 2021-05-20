@@ -4,6 +4,7 @@
       <v-card-title>How To Play</v-card-title>
       <v-card-text>
         <p>This is a game of wits and subterfuge. Can you tell the difference between your friends and the rogue AI Agent?</p>
+        <p>Compete with friends to blend in with an AI in a chatroom. Vote on the real AI, get points for guessing correctly and for tricking your opponents.</p>
         <p>
           <ol>
             <li><strong>Lobby:</strong> Don't forget to set your username! The game will start when everyone is ready or when the Host starts.</li>
@@ -25,14 +26,13 @@
             </v-tooltip></li>
           </ol>
         </p>
-        <p><strong class="mr-2">Credits:</strong>
-
-            <span class="mr-2"><a href="https://github.com/LiamAttClarke" target="_blank">Liam Clarke,</a> </span>
-            <span class="mr-2"><a href="https://github.com/DariaAnikanova" target="_blank">Daria Anikanova,</a> </span>
-            <span class="mr-2"><a href="https://github.com/nguvictor" target="_blank">Victor Nguyen</a> </span>
-
-           </p>
-        <p><strong>Created for 2021 ToJam</strong></p>
+        <p>
+          <span class="mr-1">Created by</span>
+          <span class="mr-1"><a href="https://github.com/LiamAttClarke" target="_blank">Liam Clarke,</a> </span>
+          <span class="mr-1"><a href="https://github.com/DariaAnikanova" target="_blank">Daria Anikanova,</a> </span>
+          <span class="mr-1"><a href="https://github.com/nguvictor" target="_blank">Victor Nguyen</a> </span>
+          <span>for <a href="https://tojam.ca">ToJam 2021</a></span>
+        </p>
         <v-form>
           <v-row>
             <v-col>

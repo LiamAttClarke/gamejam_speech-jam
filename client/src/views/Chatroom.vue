@@ -2,8 +2,8 @@
   <div class="chatroom">
     <div class="messages">
       <v-card class="topic py-2 px-4 mb-2" v-if="currentRound">
-        <h2>Topic</h2>
-        <p>{{ currentRound.topic }}</p>
+        <h2 class="mb-2">Topic</h2>
+        <p class="mb-0">{{ currentRound.topic }}</p>
       </v-card>
       <ul class="messages__list">
         <li v-for="(message, index) in currentRound.messages" :key="index">
@@ -53,7 +53,7 @@
 .messages__list {
   list-style-type: none;
   margin: 0;
-  padding: 0;
+  padding: 16px;
 }
 
 .chatbar {

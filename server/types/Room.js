@@ -17,7 +17,8 @@ const RoomState = {
   Prepare: 'prepare',
   Chat: 'chat',
   Vote: 'vote',
-  Reveal: 'reveal'
+  Reveal: 'reveal',
+  End: 'end'
 };
 
 const RoomEvent = {
@@ -157,10 +158,12 @@ class Room extends EventEmitter {
         this._timer.start(this._options.prepareTime * 1000);
         this.emit(RoomEvent.StateChange);
       } else {
-        this._state = RoomState.Lobby;
-        this.reset();
+        this._state = RoomState.End;
         this.emit(RoomEvent.StateChange);
       }
+    } else if (this.state === RoomState.End) {
+      this._state = RoomState.Lobby;
+      this.emit(RoomEvent.StateChange);
     }
   }
 

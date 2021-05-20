@@ -1,14 +1,13 @@
 <template>
   <v-app>
-    <v-app-bar color="white" elevation="2" app clipped-left>
+    <v-app-bar color="white" :elevation="1" app clipped-left>
       <v-app-bar-nav-icon class="no-events">
         <v-img contain max-height="50" max-width="50" src="./assets/goat.svg"></v-img>
       </v-app-bar-nav-icon>
       <v-toolbar-title>SpeechJam</v-toolbar-title>
       <v-spacer></v-spacer>
-      <RoundIndicator></RoundIndicator>
+      <RoundIndicator />
       <v-spacer></v-spacer>
-      <Timer></Timer>
     </v-app-bar>
     <PlayerList />
     <v-main class="main">
@@ -18,13 +17,12 @@
 </template>
 
 <script>
-import Timer from "./components/Timer.vue";
 import RoundIndicator from "./components/RoundIndicator.vue";
 import PlayerList from "./components/PlayerList.vue";
 
 export default {
   name: "App",
-  components: { Timer, RoundIndicator, PlayerList },
+  components: { RoundIndicator, PlayerList },
   watch: {
     "$store.state.room": function (newRoom, oldRoom) {
       if (newRoom.state !== oldRoom.state) {

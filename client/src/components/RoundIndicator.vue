@@ -1,45 +1,33 @@
 <template>
-  <span>
-    <h1>
-      {{ currentRoom }}
-      <span v-if="currentRound >= 0 && currentRoom != 'Lobby'">Round: {{ currentRound + 1 }}</span>
-    </h1>
+  <span
+    class="round-indicator"
+    v-if="!['lobby', 'end'].includes(room.state)"
+  >
+    <span class="round-indicator__info">Round: <span class="round-indicator__info-value">{{ room.round + 1 }}</span></span>
+    <span class="round-indicator__info">Stage: <span class="round-indicator__info-value">{{ room.state.toUpperCase() }}</span></span>&nbsp;
+    <span class="round-indicator__info" v-if="room.timerRemaining > 0">Time Left: <span class="round-indicator__info-value"><Timer /></span></span>
   </span>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+import Timer from "./Timer.vue";
 
 export default {
   name: "RoundIndicator",
-  data: () => ({
-    currentRoom: "",
-    currentRound: -1,
-  }),
+  components: { Timer },
   computed: {
     ...mapGetters(["room"]),
   },
-  watch: {
-    "$store.state.room": function (newRoom, oldRoom) {
-      this.currentRound = newRoom.round;
-      switch (newRoom.state) {
-        case "lobby":
-          this.currentRoom = "Lobby";
-          break;
-        case "prepare":
-          this.currentRoom = "Prepare";
-          break;
-        case "chat":
-          this.currentRoom = "Chat";
-          break;
-        case "vote":
-          this.currentRoom = "Vote";
-          break;
-        case "reveal":
-          this.currentRoom = "Reveal";
-          break;
-      }
-    },
-  },
 };
 </script>
+
+<style scoped>
+.round-indicator__info {
+  margin-right: 8px;
+}
+
+.round-indicator__info-value {
+  font-weight: bold;
+}
+</style>

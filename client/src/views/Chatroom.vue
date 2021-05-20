@@ -18,7 +18,7 @@
           :disabled="room.state === 'prepare'"
           outlined
           dense
-          class="chat_input mx-auto my-auto"
+          class="chat_input mr-4"
           placeholder="Type Here..."
           hide-details="true"
           :value="message"
@@ -27,7 +27,6 @@
         ></v-text-field>
         <v-btn
           color="primary"
-          class="ml-1"
           :disabled="room.state !== 'chat' "
           @click="sendMessage"
         >Send</v-btn>

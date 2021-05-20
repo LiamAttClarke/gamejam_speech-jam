@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h2
-      class="mb-2"
-    >{{ room.state === 'vote' ? 'Time to Vote! Who is the real AI?' : 'All Is Revealed!'}}</h2>
+    <h3
+      class="mb-4"
+    >{{ room.state === 'vote' ? 'Time to Vote! Who is the real AI?' : 'All Is Revealed!'}}</h3>
 
     <div class="grid-container">
       <v-card

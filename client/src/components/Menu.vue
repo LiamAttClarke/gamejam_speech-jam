@@ -5,7 +5,19 @@
       <v-card-text>
         <v-form>
           <v-row>
-            <v-col>
+            <v-col cols="4">
+              <v-select
+                outlined
+                dense
+                :value="room.options.rounds"
+                label="Rounds"
+                :items="roundOptions"
+                @change="(v) => $store.dispatch('setOptions', { rounds: v })"
+              ></v-select>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="4">
               <v-select
                 label="Prep Time"
                 dense
@@ -15,7 +27,7 @@
                 @change="(v) => $store.dispatch('setOptions', { prepareTime: v })"
               ></v-select>
             </v-col>
-            <v-col>
+            <v-col cols="4">
               <v-select
                 label="Chat Time"
                 dense
@@ -25,7 +37,7 @@
                 @change="(v) => $store.dispatch('setOptions', { chatTime: v })"
               ></v-select>
             </v-col>
-            <v-col>
+            <v-col cols="4">
               <v-select
                 label="Vote Time"
                 dense
@@ -33,18 +45,6 @@
                 outlined
                 :items="voteTimeOptions"
                 @change="(v) => $store.dispatch('setOptions', { voteTime: v })"
-              ></v-select>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-select
-                outlined
-                dense
-                :value="room.options.rounds"
-                label="Number of Rounds"
-                :items="roundOptions"
-                @change="(v) => $store.dispatch('setOptions', { rounds: v })"
               ></v-select>
             </v-col>
           </v-row>

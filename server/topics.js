@@ -14,4 +14,9 @@ module.exports = [
   "In a world full of superpowers, Yours is a little twisted. You never sleep. Every time you do, you wake up as some random person. Today while inside someone else, you see yourself in the supermarket.",
   "Are you interested in learning how to write a recipe? This skill is an art. That’s why I’m providing my best tips for good recipe writing.",
   "List all ingredients in order of use, as described in step-by-step instructions.",
+  "Morgan is an actor from Amsterdam who goes on a quest to find a ripped phone, but first must overcome an owl version of Kim Kardashian. Morgan teams up with a superhero called Wilson-Man, whose special power is extreme running.",
+  "CHANTAL: I'm sorry, Chantal. I just don't feel excited by this relationship anymore.",
+  "Tony gulped. He glanced at his own reflection. He was an admirable, lovable, port drinker with pointy lips and wide spots. His friends saw him as a lazy, low lover. Once, he had even helped a vigilant disabled person recover from a flying accident.",
+  "All-purpose flour and whole rolled oats are the base of the dough.",
+  "Starting your job search? Take the Triplebyte quiz and get a personalized feedback report. Identify your areas of strength compared to 200,000+ other engineers, and get resources and tips to brush up.",
 ];

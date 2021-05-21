@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="endDialog" scrollable max-width="400px">
+  <v-dialog :value="room.state === 'end'" scrollable max-width="400px">
     <v-card>
       <v-card-title>Game Over</v-card-title>
       <v-divider></v-divider>

@@ -47,7 +47,7 @@ exports.initSockets = (io) => {
   io.on('connect', (socket) => {
     anonNameCounter++;
     const player = new Player(socket.id, {
-      type: room.state === RoomState.Lobby ? PlayerType.Player : Player.PlayerType.Spectator,
+      type: room.state === RoomState.Lobby ? PlayerType.Player : PlayerType.Spectator,
       name: `${DEFAULT_PLAYER_NAME}${anonNameCounter}`,
       avatar: generateAvatar(room.players.map((p) => p.avatar)),
     });

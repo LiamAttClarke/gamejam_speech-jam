@@ -52,7 +52,6 @@ export default {
   name: "VotingBar",
   data: () => {
     return {
-      selected: "",
       random: Math.random(),
     };
   },
